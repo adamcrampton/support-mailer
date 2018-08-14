@@ -36,7 +36,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <h1 class="mt-5">Log your support ticket here!</h1>
+          <h1 class="mt-5">{{ $config->form_title }}</h1>
           <p class="lead">{!! $config->intro_html !!}</p>
          </div>
          <div class="col-lg-12">
