@@ -12,12 +12,16 @@
     <title>Support Mailer</title>
   </head>
   <body>
-    <h1>Hello, world!</h1>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+  <!-- Front end test -->
+  <ul>
+    <li>Intro HTML is: {{ $config->intro_html }}</li>
+    <li>Default provider fk is: {{ $config->default_provider_fk }}</li>
+    <li>Show multiple providers? {{ $config->show_multiple_providers }}</li>
+    <li>Use staff list? {{ $config->use_staff_list }}</li>
+  </ul>
+    <!-- Bootstrap and jQuery -->
     <script src="{{ URL::asset('vendor/jquery/jquery.min.js') }}"></script>
-
     <script src="{{ URL::asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
   </body>
 </html>
