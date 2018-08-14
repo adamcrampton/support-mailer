@@ -18,7 +18,7 @@ class ConfigsTableSeeder extends Seeder
         	'intro_html' => '<p>Here is the default intro text, which will sit above the form.</p>',
         	'default_provider_fk' => 1,
         	'show_multiple_providers' => 1,
-        	'use_staff_list' => 0,
+        	'use_staff_list' => 1,
         	'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         	'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
