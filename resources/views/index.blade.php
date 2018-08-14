@@ -32,6 +32,22 @@
     </ul>
   @endif
 
+  <p>List of issue types in database:</p>
+  <ul>
+    @foreach ($issueList as $issue)
+      <li>{{ $issue->issue_name }}</li>
+    @endforeach
+    </ul>
+
+  @if ($config->use_staff_list)
+    <p>Staff List (if enabled):</p>
+    <ul>
+    @foreach ($staffMembers as $staffMember)
+      <li>{{ $staffMember->staff_name }}, {{ $staffMember->staff_email }}</li>
+    @endforeach
+    </ul>
+  @endif
+
     <!-- Bootstrap and jQuery -->
     <script src="{{ URL::asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ URL::asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
