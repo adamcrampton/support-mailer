@@ -12,4 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+   .sass('resources/assets/sass/app.scss', 'public/css')
+   .copyDirectory('vendor/twbs/bootstrap/dist/css', 'public/vendor/bootstrap/css')
+   .copyDirectory('vendor/twbs/bootstrap/dist/js', 'public/vendor/bootstrap/js')
+   .copyDirectory('vendor/components/jquery', 'public/vendor/jquery');
