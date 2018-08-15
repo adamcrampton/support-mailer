@@ -103,6 +103,10 @@ class SupportRequestController extends Controller
         // Validate the data - a redirect will automatically kick in if it fails.
         $submitResponse = $request->validate($this->validationOptions);
 
+        // TODO: Send data off to Mailer.
+        // TODO: Log results to table.
+        // TODOL Provide success alert on view render.
+
         return redirect()->route('index')->withInput();
     }
 
