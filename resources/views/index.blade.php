@@ -90,19 +90,19 @@
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">First name</label>
                           <div class="col-lg-9">
-                              {{ Form::text('first_name', '', ['class' => 'form-control', 'id' => 'first_name']) }}
+                              {{ Form::text('first_name', null, ['class' => 'form-control', 'id' => 'first_name']) }}
                           </div>
                       </div>
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">Last name</label>
                           <div class="col-lg-9">
-                            {{ Form::text('last_name', '', ['class' => 'form-control', 'id' => 'last_name']) }}
+                            {{ Form::text('last_name', null, ['class' => 'form-control', 'id' => 'last_name']) }}
                           </div>
                       </div>
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">Email</label>
                           <div class="col-lg-9">
-                              {{ Form::email('email', '', ['class' => 'form-control', 'id' => 'email']) }}
+                              {{ Form::email('email', null, ['class' => 'form-control', 'id' => 'email']) }}
                           </div>
                       </div>
                       @endif
@@ -115,7 +115,7 @@
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label" for="phone_number">Phone number</label>
                           <div class="col-lg-9">
-                              {{ Form::text('phone_number', '', ['class' => 'form-control', 'id' => 'phone_number']) }}
+                              {{ Form::text('phone_number', null, ['class' => 'form-control', 'id' => 'phone_number']) }}
                           </div>
                       </div>
                       <div class="form-group row">
@@ -132,7 +132,7 @@
                       <div class="form-group row">
                        <label class="col-lg-3 col-form-label form-control-label">Issue Details</label>
                           <div class="col-lg-9">
-                              {{ Form::textarea('issue_details', '', ['class' => 'form-control', 'id' => 'issue_details', 'rows' => '6']) }}
+                              {{ Form::textarea('issue_details', null, ['class' => 'form-control', 'id' => 'issue_details', 'rows' => '6']) }}
                           </div>
                       </div>
                       <div class="form-group row">
