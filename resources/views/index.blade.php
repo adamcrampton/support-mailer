@@ -8,7 +8,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
         <a class="navbar-brand" href="#">Support Mailer</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -28,9 +28,20 @@
               <a class="nav-link" href="#">Menu Link 3</a>
             </li>
           </ul>
-        </div>
+        </div> --}}
       </div>
     </nav>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <p>Sorry, there was a problem submitting your form. Details:</p>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <!-- Page Content -->
     <div class="container">
@@ -46,7 +57,7 @@
                   <h3 class="mb-0">Your Information</h3>
               </div>
               <div class="card-body">
-                  {!! Form::open(['action' => 'FormController@store', 'class' => 'form']) !!}
+                  {!! Form::open(['action' => 'SupportRequestController@store', 'class' => 'form']) !!}
                       {{-- Display select for providers if configured to do so. --}}
                       @if ($config->show_multiple_providers)
                        <div class="form-group row">
@@ -78,7 +89,8 @@
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">First name</label>
                           <div class="col-lg-9">
-                              <input class="form-control" type="text" name="first_name" id="first_name">
+                              {{-- <input class="form-control" type="text" name="first_name" id="first_name"> --}}
+                              {{ Form::text('first_name') }}
                           </div>
                       </div>
                       <div class="form-group row">

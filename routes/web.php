@@ -1,8 +1,7 @@
 <?php
 
 // Front end routes.
-Route::get('/', 'PageController@index');
-Route::resource('forms', 'FormController');
+Route::resource('/', 'SupportRequestController');
 
 // Admin routes.
 Route::resource('admin', 'AdminController');
