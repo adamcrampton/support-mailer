@@ -2,6 +2,7 @@
 
 // Front end routes.
 Route::get('/', 'PageController@index');
+Route::resource('forms', 'FormController');
 
 // Admin routes.
 Route::resource('admin', 'AdminController');

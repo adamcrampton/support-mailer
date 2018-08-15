@@ -39,40 +39,107 @@
           <h1 class="mt-5">{{ $config->form_title }}</h1>
           <p class="lead">{!! $config->intro_html !!}</p>
          </div>
-         <div class="col-lg-12">
-           <p>Config:</p>
-            <ul>
-              <li>Intro HTML is: {{ $config->intro_html }}</li>
-              <li>Default provider is: {{ $config->provider->provider_name }}</li>
-              <li>Show multiple providers? {{ $config->show_multiple_providers }}</li>
-              <li>Use staff list? {{ $config->use_staff_list }}</li>
-            </ul>
+        <!-- Submission Form -->
+        <div class="col-lg-12">
+          <div class="card card-outline-secondary">
+              <div class="card-header">
+                  <h3 class="mb-0">Your Information</h3>
+              </div>
+              <div class="card-body">
+                  {!! Form::open(['action' => 'FormController@store', 'class' => 'form']) !!}
+                      {{-- Display select for providers if configured to do so. --}}
+                      @if ($config->show_multiple_providers)
+                       <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label" for="provider_list">Select a provider</label>
+                        <div class="col-lg-9">
+                          <select class="form-control" name="provider_list" id="provider_list">
+                            @foreach ($providers as $provider)
+                              <option value="{{ $provider->id }}">{{ $provider->provider_name }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+                      @endif
 
-            @if ($config->show_multiple_providers)
-              <p>Provider List (if enabled):</p>
-              <ul>
-              @foreach ($providers as $provider)
-                <li>{{ $provider->provider_name }}</li>
-              @endforeach
-              </ul>
-            @endif
+                      {{-- Display either input fields or staff member select, depending on config option. --}}
+                      @if ($config->use_staff_list)
+                      <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label" for="staff_list">Select your name (add your name in the Issue Details field if you can't find your name in the list)</label>
+                        <div class="col-lg-9">
+                          <select class="form-control" name="staff_list[]" id="staff_list">
+                            @foreach ($staffMembers as $staffMember)
+                              <option value="[{{$staffMember->id}}, {{ $staffMember->staff_name }}, {{ $staffMember->staff_email }}]">{{ $staffMember->staff_name }}</option>
+                            @endforeach
+                            <option value="not_in_list">I'm not in this list</option>
+                          </select>
+                        </div>
+                      </div>
+                      @else
+                      <div class="form-group row">
+                          <label class="col-lg-3 col-form-label form-control-label">First name</label>
+                          <div class="col-lg-9">
+                              <input class="form-control" type="text" name="first_name" id="first_name">
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label class="col-lg-3 col-form-label form-control-label">Last name</label>
+                          <div class="col-lg-9">
+                              <input class="form-control" type="text" name="last_name" id="last_name">
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label class="col-lg-3 col-form-label form-control-label">Email</label>
+                          <div class="col-lg-9">
+                              <input class="form-control" type="email" name="email" id="email">
+                          </div>
+                      </div>
+                      @endif
 
-            <p>List of issue types in database:</p>
-            <ul>
-              @foreach ($issueList as $issue)
-                <li>{{ $issue->issue_name }}</li>
-              @endforeach
-              </ul>
+                      <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label" for="preferred_contact">Preferred contact method</label>
+                        <div class="col-lg-9">
+                          <select class="form-control" name="preferred_contact" id="preferred_contact">
+                              <option value="Email">Email</option>
+                              <option value="Phone">Phone</option>
+                          </select>
+                        </div>
+                      </div>
 
-            @if ($config->use_staff_list)
-              <p>Staff List (if enabled):</p>
-              <ul>
-              @foreach ($staffMembers as $staffMember)
-                <li>{{ $staffMember->staff_name }}, {{ $staffMember->staff_email }}</li>
-              @endforeach
-              </ul>
-            @endif
-         </div>
+                      <div class="form-group row">
+                          <label class="col-lg-3 col-form-label form-control-label" for="phone_number">Phone number</label>
+                          <div class="col-lg-9">
+                              <input class="form-control" type="text" name="phone_number" id="phone_number">
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label" for="issue_type">Select an issue type</label>
+                        <div class="col-lg-9">
+                          <select class="form-control" name="issue_type" id="issue_type">
+                            @foreach ($issueList as $issueType)
+                              <option value="{{ $issueType->id }}">{{ $issueType->issue_name }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                       <label class="col-lg-3 col-form-label form-control-label">Issue Details</label>
+                          <div class="col-lg-9">
+                              <textarea rows="6" name="issue_details" class="form-control" id="issue_details"></textarea>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <label class="col-lg-3 col-form-label form-control-label"></label>
+                          <div class="col-lg-9">
+                              <input type="reset" class="btn btn-secondary" value="Cancel">
+                              {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+                          </div>
+                      </div>
+                  {!! Form::close() !!}
+              </div>
+          </div>
         </div>
       </div>
     </div>
