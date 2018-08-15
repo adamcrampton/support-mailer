@@ -66,7 +66,7 @@
                           <select class="form-control" name="provider_list" id="provider_list" required>
                             <option selected="selected" value required>Please select one:</option>
                             @foreach ($providers as $provider)
-                              <option value="{{ $provider->id }}">{{ $provider->provider_name }}</option>
+                              <option value="{{ $provider->id }}" {{ (old('provider_list') == $provider->id) ? 'selected' : '' }}>{{ $provider->provider_name }}</option>
                             @endforeach
                           </select>
                         </div>
@@ -81,7 +81,7 @@
                             <option selected="selected" value>Please select one:</option>
                             <option value="not_in_list">I'm not in this list</option>
                             @foreach ($staffMembers as $staffMember)
-                              <option value="[{{$staffMember->id}}, {{ $staffMember->staff_name }}, {{ $staffMember->staff_email }}]">{{ $staffMember->staff_name }}</option>
+                              <option value="[{{$staffMember->id}}, {{ $staffMember->staff_name }}, {{ $staffMember->staff_email }}]" {{ $oldStaffListValue == $staffMember->id ? 'selected' : '' }}>{{ $staffMember->staff_name }}</option>
                             @endforeach
                           </select>
                         </div>
@@ -90,32 +90,32 @@
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">First name</label>
                           <div class="col-lg-9">
-                              {{ Form::text('first_name', null, ['class' => 'form-control', 'id' => 'first_name', 'required']) }}
+                              {{ Form::text('first_name', old('first_name'), ['class' => 'form-control', 'id' => 'first_name', 'required']) }}
                           </div>
                       </div>
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">Last name</label>
                           <div class="col-lg-9">
-                            {{ Form::text('last_name', null, ['class' => 'form-control', 'id' => 'last_name', 'required']) }}
+                            {{ Form::text('last_name', old('last_name'), ['class' => 'form-control', 'id' => 'last_name', 'required']) }}
                           </div>
                       </div>
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">Email</label>
                           <div class="col-lg-9">
-                              {{ Form::email('email', null, ['class' => 'form-control', 'id' => 'email', 'required']) }}
+                              {{ Form::email('email', old('email'), ['class' => 'form-control', 'id' => 'email', 'required']) }}
                           </div>
                       </div>
                       @endif
                       <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label" for="preferred_contact">Preferred contact method</label>
                         <div class="col-lg-9">
-                          {{ Form::select('preferred_contact', ['email' => 'Email', 'phone' => 'Phone'], null, ['class' => 'form-control', 'id' => 'form-control', 'placeholder' => 'Choose an option:', 'required']) }}
+                          {{ Form::select('preferred_contact', ['email' => 'Email', 'phone' => 'Phone'], old('preferred_contact'), ['class' => 'form-control', 'id' => 'form-control', 'placeholder' => 'Choose an option:', 'required']) }}
                         </div>
                       </div>
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label" for="phone_number">Phone number</label>
                           <div class="col-lg-9">
-                              {{ Form::text('phone_number', null, ['class' => 'form-control', 'id' => 'phone_number']) }}
+                              {{ Form::text('phone_number', old('phone_number'), ['class' => 'form-control', 'id' => 'phone_number']) }}
                           </div>
                       </div>
                       <div class="form-group row">
@@ -124,7 +124,7 @@
                           <select class="form-control" name="issue_type" id="issue_type" required>
                             <option selected="selected" value>Please select one:</option>
                             @foreach ($issueList as $issueType)
-                              <option value="{{ $issueType->id }}">{{ $issueType->issue_name }}</option>
+                              <option value="{{ $issueType->id }}" {{ (old('issue_type') == $issueType->id) ? 'selected' : '' }}>{{ $issueType->issue_name }}</option>
                             @endforeach
                           </select>
                         </div>
@@ -132,7 +132,7 @@
                       <div class="form-group row">
                        <label class="col-lg-3 col-form-label form-control-label">Issue Details</label>
                           <div class="col-lg-9">
-                              {{ Form::textarea('issue_details', null, ['class' => 'form-control', 'id' => 'issue_details', 'rows' => '6', 'required']) }}
+                              {{ Form::textarea('issue_details', old('issue_details'), ['class' => 'form-control', 'id' => 'issue_details', 'rows' => '6', 'required']) }}
                           </div>
                       </div>
                       <div class="form-group row">

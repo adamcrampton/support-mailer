@@ -62,11 +62,18 @@ class SupportRequestController extends Controller
      */
     public function index()
     {
+        // Check if there's a staff_list item in old().
+        // If so, extract the ID value so we can pass it to the front end.
+        // Otherwise it's really messy to extract this from a string value in the front end.
+        $oldStaffListValue = old('staff_list') ? old('staff_list')[0][1] : 0;
+
+        // Pass old required config to front end.
         return view('index', [
             'config' => $this->configData, 
             'providers' => $this->providerList, 
             'issueList' => $this->issueList,
-            'staffMembers' => $this->staffMembers
+            'staffMembers' => $this->staffMembers,
+            'oldStaffListValue' => $oldStaffListValue
         ]);
     }
 
@@ -94,7 +101,9 @@ class SupportRequestController extends Controller
         }
 
         // Validate the data - a redirect will automatically kick in if it fails.
-        $request->validate($this->validationOptions);
+        $submitResponse = $request->validate($this->validationOptions);
+
+        return redirect()->route('index')->withInput();
     }
 
     /**
