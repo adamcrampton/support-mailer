@@ -10,30 +10,63 @@ use App\Models\StaffMember;
 
 class SupportRequestController extends Controller
 {
+    private $configData;
+    private $providerList;
+    private $issueList;
+    private $staffMembers;
+    private $validationOptions;
+
+    public function __construct(Config $config, Provider $provider, IssueType $issueType, StaffMember $staffMember)
+    {
+        // Build configuration for the front end.
+        // Fetch the config so we know what to display.
+        $this->configData = $config->getConfig();
+
+        // Get a list of providers if the option is set.
+        $this->providerList = $this->configData->show_multiple_providers ? $provider->getProviders() : [];
+
+        // Get a list of issue types.
+        $this->issueList = $issueType->getIssueTypes();
+
+        // Get a list of staff members if the option is set.
+        $this->staffMembers = $this->configData->use_staff_list ? $staffMember->getStaffMembers() : [];
+
+        // Set default validation options.
+        $validationOptions = [
+            'preferred_contact' => [
+                'required'
+            ],
+            'issue_type' => [
+                'required'
+            ]
+            ,
+            'issue_details' => [
+                'required'
+            ]
+        ];
+
+        // Set additional validation options based on global config.
+        if (! empty($this->providerList)) {
+            $this->validationOptions['provider_list'] = ['required'];
+        }
+
+        if (! empty($this->staffMembers)) {
+            $this->validationOptions['staff_list'] = ['required'];
+        }
+    }  
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Config $config, Provider $provider, IssueType $issueType, StaffMember $staffMember)
+    public function index()
     {
-        // Fetch the config so we know what to display.
-        $configData = $config->getConfig();
-
-        // Get a list of providers if the option is set.
-        $providerList = $configData->show_multiple_providers ? $provider->getProviders() : [];
-
-        // Get a list of issue types.
-        $issueList = $issueType->getIssueTypes();
-
-        // Get a list of staff members if the option is set.
-        $staffMembers = $configData->use_staff_list ? $staffMember->getStaffMembers() : [];
-
         return view('index', [
-            'config' => $configData, 
-            'providers' => $providerList, 
-            'issueList' => $issueList,
-            'staffMembers' => $staffMembers
+            'config' => $this->configData, 
+            'providers' => $this->providerList, 
+            'issueList' => $this->issueList,
+            'staffMembers' => $this->staffMembers
         ]);
     }
 
@@ -44,7 +77,7 @@ class SupportRequestController extends Controller
      */
     public function create()
     {
-       //
+       // Since the front page is actually a form, and the only view on the public front-end, I've put this into the index method to save complication.
     }
 
     /**
@@ -55,15 +88,13 @@ class SupportRequestController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the data.
-        $request->validate([
-            'provider_list' => 'required',
-            'staff_list' => 'required',
-            'preferred_contact' => 'required',
-            'phone_number' => 'required',
-            'issue_type' => 'required',
-            'issue_details' => 'required'
-        ]);
+        // Set additional validation options based on any front end logic passed through.
+        if ($request->preferred_contact === 'phone') {
+            $this->validationOptions['phone_number'] = ['required'];
+        }
+
+        // Validate the data - a redirect will automatically kick in if it fails.
+        $request->validate($this->validationOptions);
     }
 
     /**

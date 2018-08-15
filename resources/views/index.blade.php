@@ -63,8 +63,8 @@
                        <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label" for="provider_list">Select a provider</label>
                         <div class="col-lg-9">
-                          <select class="form-control" name="provider_list" id="provider_list">
-                            <option selected="selected" value>Please select one:</option>
+                          <select class="form-control" name="provider_list" id="provider_list" required>
+                            <option selected="selected" value required>Please select one:</option>
                             @foreach ($providers as $provider)
                               <option value="{{ $provider->id }}">{{ $provider->provider_name }}</option>
                             @endforeach
@@ -75,14 +75,14 @@
                       {{-- Display either input fields or staff member select, depending on config option. --}}
                       @if ($config->use_staff_list)
                       <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label" for="staff_list">Select your name (add your name in the Issue Details field if you can't find your name in the list)</label>
+                        <label class="col-lg-3 col-form-label form-control-label" for="staff_list">Select your name</label>
                         <div class="col-lg-9">
-                          <select class="form-control" name="staff_list[]" id="staff_list">
+                          <select class="form-control" name="staff_list[]" id="staff_list" required>
                             <option selected="selected" value>Please select one:</option>
+                            <option value="not_in_list">I'm not in this list</option>
                             @foreach ($staffMembers as $staffMember)
                               <option value="[{{$staffMember->id}}, {{ $staffMember->staff_name }}, {{ $staffMember->staff_email }}]">{{ $staffMember->staff_name }}</option>
                             @endforeach
-                            <option value="not_in_list">I'm not in this list</option>
                           </select>
                         </div>
                       </div>
@@ -90,26 +90,26 @@
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">First name</label>
                           <div class="col-lg-9">
-                              {{ Form::text('first_name', null, ['class' => 'form-control', 'id' => 'first_name']) }}
+                              {{ Form::text('first_name', null, ['class' => 'form-control', 'id' => 'first_name', 'required']) }}
                           </div>
                       </div>
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">Last name</label>
                           <div class="col-lg-9">
-                            {{ Form::text('last_name', null, ['class' => 'form-control', 'id' => 'last_name']) }}
+                            {{ Form::text('last_name', null, ['class' => 'form-control', 'id' => 'last_name', 'required']) }}
                           </div>
                       </div>
                       <div class="form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">Email</label>
                           <div class="col-lg-9">
-                              {{ Form::email('email', null, ['class' => 'form-control', 'id' => 'email']) }}
+                              {{ Form::email('email', null, ['class' => 'form-control', 'id' => 'email', 'required']) }}
                           </div>
                       </div>
                       @endif
                       <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label" for="preferred_contact">Preferred contact method</label>
                         <div class="col-lg-9">
-                          {{ Form::select('preferred_contact', ['email' => 'Email', 'phone' => 'Phone'], null, ['class' => 'form-control', 'id' => 'form-control', 'placeholder' => 'Choose an option:']) }}
+                          {{ Form::select('preferred_contact', ['email' => 'Email', 'phone' => 'Phone'], null, ['class' => 'form-control', 'id' => 'form-control', 'placeholder' => 'Choose an option:', 'required']) }}
                         </div>
                       </div>
                       <div class="form-group row">
@@ -121,7 +121,7 @@
                       <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label" for="issue_type">Select an issue type</label>
                         <div class="col-lg-9">
-                          <select class="form-control" name="issue_type" id="issue_type">
+                          <select class="form-control" name="issue_type" id="issue_type" required>
                             <option selected="selected" value>Please select one:</option>
                             @foreach ($issueList as $issueType)
                               <option value="{{ $issueType->id }}">{{ $issueType->issue_name }}</option>
@@ -132,7 +132,7 @@
                       <div class="form-group row">
                        <label class="col-lg-3 col-form-label form-control-label">Issue Details</label>
                           <div class="col-lg-9">
-                              {{ Form::textarea('issue_details', null, ['class' => 'form-control', 'id' => 'issue_details', 'rows' => '6']) }}
+                              {{ Form::textarea('issue_details', null, ['class' => 'form-control', 'id' => 'issue_details', 'rows' => '6', 'required']) }}
                           </div>
                       </div>
                       <div class="form-group row">
