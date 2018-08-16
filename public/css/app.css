@@ -1,0 +1,5 @@
+.form-group.required .form-control-label::after {
+  content: "*";
+  margin-left: 5px;
+  color: red;
+}
