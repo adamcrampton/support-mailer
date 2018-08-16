@@ -11,7 +11,6 @@ use App\Mail\SupportMailer;
 
 class SupportRequestController extends Controller
 {
-    public $submitResponse;
     private $configData;
     private $fieldConfig;
     private $providerList;
@@ -105,30 +104,45 @@ class SupportRequestController extends Controller
         }
 
         // Validate the data - a redirect will automatically kick in if it fails.
-        $this->submitResponse = $request->validate($this->validationOptions);
+        $request->validate($this->validationOptions);
 
-        // Now fetch the data, depending on config and any front end options.
+        // Now fetch the data.
         $fieldArray = [];
 
-        $fieldArray['provider'] = ($this->fieldConfig['provider'] === 'request') ? Provider::where('id', $this->submitResponse['provider_list'])->first()->provider_name : Provider::where('id', $this->configData->default_provider_fk)->first()->provider_name;
+        // Fetch provider based on a config default or a front end selection.
+        $fieldArray['provider'] = ($this->fieldConfig['provider'] === 'request') ? Provider::where('id', $request->provider_list)->first()->provider_name : Provider::where('id', $this->configData->default_provider_fk)->first()->provider_name;
 
-        $fieldArray['staff'] = ($this->fieldConfig['staff'] === 'request') ? StaffMember::where('id', $this->submitResponse['staff_list'])->first()->staff_name;
-
+        // Fetch staff details based on input values from front end selection, or matching ID in the db.
         if ($this->fieldConfig['staff'] === 'request') {
-
+            $fieldArray['first_name'] = $request->first_name;
+            $fieldArray['last_name'] = $request->last_name;
+            $fieldArray['email'] = $request->email;
         } else {
-            $fieldArray['staff'] = '';
+            // Query the db only once.
+            $staffDetails = StaffMember::where('id', $request->staff_list)->first();
+
+            // Add details to the array.
+            $fieldArray['first_name'] = $staffDetails->staff_first_name;
+            $fieldArray['last_name'] = $staffDetails->staff_last_name;
+            $fieldArray['email'] = $staffDetails->staff_email;
         }        
+
+        // Add phone number if required.
+        if ($request->preferred_contact === 'phone') {
+            $fieldArray['phone'] = $request->phone_number;
+        }
+
+        // These fields are just pulled from the request.
+        $fieldArray['preferred_contact'] = $request->preferred_contact;
+        $fieldArray['issue'] = $request->issue_type;
+        $fieldArray['details'] = $request->issue_details;
+
+        // Validation is successful - send all required data off to the mailer.
+        $supportMailer->build($fieldArray);
 
         // TODO: Log results to table.
         // TODO: Provide success alert on view render.
-
-        // Validation is successful - send all required data off to the mailer.
-        $supportMailer->build($this->submitResponse);
-
         // return redirect()->route('index');
-
-        dd('Validation succeeded, stop.');
     }
 
     /**
