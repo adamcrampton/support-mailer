@@ -79,9 +79,8 @@
                         <div class="col-lg-9">
                           <select class="form-control" name="staff_list" id="staff_list" required>
                             <option selected="selected" value>Please select one:</option>
-                            <option value="not_in_list">I'm not in this list</option>
                             @foreach ($staffMembers as $staffMember)
-                              <option value="{{$staffMember->id}}" {{ old('staff_list') == $staffMember->id ? 'selected' : '' }}>{{ $staffMember->staff_name }}</option>
+                              <option value="{{$staffMember->id}}" {{ old('staff_list') == $staffMember->id ? 'selected' : '' }}>{{ $staffMember->staff_first_name }} {{ $staffMember->staff_last_name }}</option>
                             @endforeach
                           </select>
                         </div>
