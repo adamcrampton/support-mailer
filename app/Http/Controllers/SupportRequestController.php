@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Config;
 use App\Models\Provider;
 use App\Models\IssueType;
@@ -136,7 +137,9 @@ class SupportRequestController extends Controller
             $fieldArray['first_name'] = $staffDetails->staff_first_name;
             $fieldArray['last_name'] = $staffDetails->staff_last_name;
             $fieldArray['email'] = $staffDetails->staff_email;
-        }        
+        }
+
+        $fieldArray['issue'] = IssueType::where('id', $request->issue_type)->first()->issue_name;
 
         // Add phone number if required.
         if ($request->preferred_contact === 'phone') {
@@ -147,14 +150,14 @@ class SupportRequestController extends Controller
 
         // These fields are just pulled from the request.
         $fieldArray['preferred_contact'] = $request->preferred_contact;
-        $fieldArray['issue'] = $request->issue_type;
         $fieldArray['details'] = $request->issue_details;
 
-        // TEST: Render email.
+        // Validation is successful - build the email.
+        $supportMailer->buildConfig($fieldArray);
+        $result = $supportMailer->build();
 
-
-        // Validation is successful - send all required data off to the mailer.
-        $supportMailer->build($fieldArray);
+        // Now send it to the provider.
+        $result = Mail::to($providerDetails->provider_email)->send($supportMailer);
 
         // TODO: Log results to table.
         // TODO: Provide success alert on view render.

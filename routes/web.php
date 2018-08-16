@@ -11,6 +11,3 @@ Route::resource('config', 'ConfigController');
 Route::resource('issue_types', 'IssueTypeController');
 Route::resource('staff_members', 'StaffMemberController');
 Route::resource('logs', 'SubmissionLogController');
-
-// Mail routes.
-Route::get('mail/send', 'MailController@send');
