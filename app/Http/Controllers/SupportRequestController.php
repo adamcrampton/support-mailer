@@ -11,7 +11,9 @@ use App\Mail\SupportMailer;
 
 class SupportRequestController extends Controller
 {
+    public $submitResponse;
     private $configData;
+    private $fieldConfig;
     private $providerList;
     private $issueList;
     private $staffMembers;
@@ -58,6 +60,9 @@ class SupportRequestController extends Controller
             $this->validationOptions['last_name'] = ['required'];
             $this->validationOptions['email'] = ['required'];
         }
+
+        // Set the actual fields we are going to eventually pass to the mailer.
+        $this->fieldConfig = $config->getFieldConfig();
     }  
 
     /**
@@ -67,7 +72,7 @@ class SupportRequestController extends Controller
      */
     public function index()
     {
-        // Pass old required config to front end.
+        // Pass all required config to front end.
         return view('index', [
             'config' => $this->configData, 
             'providers' => $this->providerList, 
@@ -100,14 +105,26 @@ class SupportRequestController extends Controller
         }
 
         // Validate the data - a redirect will automatically kick in if it fails.
-        $submitResponse = $request->validate($this->validationOptions);
+        $this->submitResponse = $request->validate($this->validationOptions);
+
+        // Now fetch the data, depending on config and any front end options.
+        $fieldArray = [];
+
+        $fieldArray['provider'] = ($this->fieldConfig['provider'] === 'request') ? Provider::where('id', $this->submitResponse['provider_list'])->first()->provider_name : Provider::where('id', $this->configData->default_provider_fk)->first()->provider_name;
+
+        $fieldArray['staff'] = ($this->fieldConfig['staff'] === 'request') ? StaffMember::where('id', $this->submitResponse['staff_list'])->first()->staff_name;
+
+        if ($this->fieldConfig['staff'] === 'request') {
+
+        } else {
+            $fieldArray['staff'] = '';
+        }        
 
         // TODO: Log results to table.
         // TODO: Provide success alert on view render.
 
-        // Validation is successful - send form data off to the mailer.
-        $supportMailer->build($submitResponse);
-
+        // Validation is successful - send all required data off to the mailer.
+        $supportMailer->build($this->submitResponse);
 
         // return redirect()->route('index');
 
