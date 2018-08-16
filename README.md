@@ -28,7 +28,8 @@ Two quick notes for Windows + Vagrant (e.g. Homestead) devs:
 As follows:
 1. Clone the repo
 1. Run composer install
-1. Copy the .env.example to .env, update the setting to match your environment
+1. Copy the .env.example to .env, update the settings to match your environment.
+1. Add User table seed config to your .env file - see UsersTableSeeder.php for the specifics
 1. Generate an app key - php artisan key:generate
 1. Create your database
 1. Migrate and seed your database - php artisan:migrate --seed (or leave the seed switch off if you prefer not to)
