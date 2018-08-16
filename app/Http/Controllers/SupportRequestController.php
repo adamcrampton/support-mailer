@@ -52,6 +52,10 @@ class SupportRequestController extends Controller
 
         if (! empty($this->staffMembers)) {
             $this->validationOptions['staff_list'] = ['required'];
+        } else {
+            $this->validationOptions['first_name'] = ['required'];
+            $this->validationOptions['last_name'] = ['required'];
+            $this->validationOptions['email'] = ['required'];
         }
     }  
 
