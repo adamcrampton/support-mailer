@@ -32,7 +32,7 @@ class SupportRequestController extends Controller
         $this->staffMembers = $this->configData->use_staff_list ? $staffMember->getStaffMembers() : [];
 
         // Set default validation options.
-        $validationOptions = [
+        $this->validationOptions = [
             'preferred_contact' => [
                 'required'
             ],
