@@ -7,6 +7,7 @@ use App\Models\Config;
 use App\Models\Provider;
 use App\Models\IssueType;
 use App\Models\StaffMember;
+use App\Mail\SupportMailer;
 
 class SupportRequestController extends Controller
 {
@@ -91,7 +92,7 @@ class SupportRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, SupportMailer $supportMailer)
     {
         // Set additional validation options based on any front end logic passed through.
         if ($request->preferred_contact === 'phone') {
@@ -101,11 +102,16 @@ class SupportRequestController extends Controller
         // Validate the data - a redirect will automatically kick in if it fails.
         $submitResponse = $request->validate($this->validationOptions);
 
-        // TODO: Send data off to Mailer.
         // TODO: Log results to table.
-        // TODOL Provide success alert on view render.
+        // TODO: Provide success alert on view render.
 
-        return redirect()->route('index')->withInput();
+        // Validation is successful - send form data off to the mailer.
+        $supportMailer->build($submitResponse);
+
+
+        // return redirect()->route('index');
+
+        dd('Validation succeeded, stop.');
     }
 
     /**
