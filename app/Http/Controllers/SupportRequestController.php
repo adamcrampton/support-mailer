@@ -112,6 +112,17 @@ class SupportRequestController extends Controller
         // Fetch provider based on a config default or a front end selection.
         $fieldArray['provider'] = ($this->fieldConfig['provider'] === 'request') ? Provider::where('id', $request->provider_list)->first()->provider_name : Provider::where('id', $this->configData->default_provider_fk)->first()->provider_name;
 
+        // Query the db based on default or selection.
+        if ($this->fieldConfig['provider'] === 'request') {
+            $providerDetails = Provider::where('id', $request->provider_list)->first();
+        } else {
+            $providerDetails = Provider::where('id', $this->configData->default_provider_fk)->first();
+        }
+
+        // Add details to the array.
+        $fieldArray['provider_name'] = $providerDetails->provider_name;
+        $fieldArray['provider_email'] = $providerDetails->provider_email;
+
         // Fetch staff details based on input values from front end selection, or matching ID in the db.
         if ($this->fieldConfig['staff'] === 'request') {
             $fieldArray['first_name'] = $request->first_name;
@@ -130,6 +141,8 @@ class SupportRequestController extends Controller
         // Add phone number if required.
         if ($request->preferred_contact === 'phone') {
             $fieldArray['phone'] = $request->phone_number;
+        } else {
+            $fieldArray['phone'] = 'Not applicable';
         }
 
         // These fields are just pulled from the request.

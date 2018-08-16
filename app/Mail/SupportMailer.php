@@ -20,6 +20,7 @@ class SupportMailer extends Mailable
      */
     public function build($fieldArray)
     {
-        dd($fieldArray);
+        return $this->view('mail.support_request')
+            ->with($fieldArray);
     }
 }
