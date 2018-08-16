@@ -150,6 +150,9 @@ class SupportRequestController extends Controller
         $fieldArray['issue'] = $request->issue_type;
         $fieldArray['details'] = $request->issue_details;
 
+        // TEST: Render email.
+
+
         // Validation is successful - send all required data off to the mailer.
         $supportMailer->build($fieldArray);
 
