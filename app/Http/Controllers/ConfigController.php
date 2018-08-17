@@ -105,7 +105,22 @@ class ConfigController extends Controller
         // Validate then update the Global Config.
         $request->validate($this->validationOptions);
 
-        dd('passed');
+        // Set up values for update.
+        $updateArray = [
+            'config_name' => 'global',
+            'form_heading' => $request->form_heading,
+            'form_title' => $request->form_title,
+            'intro_html' => $request->intro_html,
+            'default_provider_fk' => $request->provider_list,
+            'show_multiple_providers' => $request->show_multiple_providers,
+            'use_staff_list' => $request->use_staff_list
+        ];
+
+        // Validation has passed if we've got this far, proceed with the update.
+        Config::where('id', $id)
+            ->update($updateArray);
+
+        return redirect()->route('config.index')->with('success', 'Success! Global Config has been updated.');
     }
 
     /**

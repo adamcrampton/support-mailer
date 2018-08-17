@@ -6,6 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Config extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'config_name',
+        'form_heading',
+        'form_title',
+        'intro_html',
+        'default_provider_fk',
+        'show_multiple_providers',
+        'use_staff_list',
+    ];
+
     private $globalConfig;
 
     // Retrieve default config.
