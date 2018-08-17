@@ -58,7 +58,7 @@ class SupportRequestController extends Controller
         } else {
             $this->validationOptions['first_name'] = ['required'];
             $this->validationOptions['last_name'] = ['required'];
-            $this->validationOptions['email'] = ['required'];
+            $this->validationOptions['email'] = ['required|email'];
         }
 
         // Set the actual fields we are going to eventually pass to the mailer.
