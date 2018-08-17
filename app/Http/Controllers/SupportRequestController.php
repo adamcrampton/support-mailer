@@ -27,7 +27,7 @@ class SupportRequestController extends Controller
         $this->configData = $config->getConfig();
 
         // Get a list of providers if the option is set.
-        $this->providerList = $this->configData->show_multiple_providers ? $provider->getProviders() : [];
+        $this->providerList = $this->configData->show_multiple_providers ? $provider->getProviders() : $this->configData->default_provider_fk;
 
         // Get a list of issue types.
         $this->issueList = $issueType->getIssueTypes();
@@ -42,15 +42,14 @@ class SupportRequestController extends Controller
             ],
             'issue_type' => [
                 'required'
-            ]
-            ,
+            ],
             'issue_details' => [
                 'required'
-            ]
+            ],
         ];
 
         // Set additional validation options based on global config.
-        if (! empty($this->providerList)) {
+        if (is_array($this->providerList)) { // This will be a string (default provider fk) if there's no list.
             $this->validationOptions['provider_list'] = ['required'];
         }
 
@@ -112,9 +111,11 @@ class SupportRequestController extends Controller
         $fieldArray = [];
 
         // Query the db based on default or selection.
-        if ($this->fieldConfig['provider'] === 'request') {
+        if ($this->fieldConfig['provider'] === 'db') {
+            // If providers were fetched from the db for the front end, then we must use the selection to find the provider data.
             $providerDetails = Provider::where('id', $request->provider_list)->first();
         } else {
+            // Otherwise, we grab the default provider details.
             $providerDetails = Provider::where('id', $this->configData->default_provider_fk)->first();
         }
 
