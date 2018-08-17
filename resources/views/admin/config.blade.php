@@ -7,23 +7,24 @@
         <div class="col-lg-12">
           <h1 class="mt-5">Global Configuration</h1>
           	<div class="card-body">
-				{!! Form::open(['action' => 'ConfigController@store', 'class' => 'form']) !!}
+				{!! Form::open(['action' => ['ConfigController@update', $config->id], 'class' => 'form']) !!}
+				{{ method_field('PATCH') }}
 				  <div class="form-group row required">
 				      <label class="col-lg-3 col-form-label form-control-label">Form Heading</label>
 				      <div class="col-lg-9">
-				          {{ Form::text('form-heading', $config->form_heading, ['class' => 'form-control', 'id' => 'form-heading', 'required']) }}
+				          {{ Form::text('form_heading', $config->form_heading, ['class' => 'form-control', 'id' => 'form_heading', 'required']) }}
 				      </div>
 				  </div>
 				  <div class="form-group row required">
 				      <label class="col-lg-3 col-form-label form-control-label">Form Title</label>
 				      <div class="col-lg-9">
-				          {{ Form::text('form-title', $config->form_title, ['class' => 'form-control', 'id' => 'form-title', 'required']) }}
+				          {{ Form::text('form_title', $config->form_title, ['class' => 'form-control', 'id' => 'form_title', 'required']) }}
 				      </div>
 				  </div>
 				  <div class="form-group row required">
 				      <label class="col-lg-3 col-form-label form-control-label">Intro HTML</label>
 				      <div class="col-lg-9">
-				          {{ Form::textarea('intro-html', $config->intro_html, ['class' => 'form-control', 'id' => 'intro-html', 'required']) }}
+				          {{ Form::textarea('intro_html', $config->intro_html, ['class' => 'form-control', 'id' => 'intro_html', 'required']) }}
 				      </div>
 				  </div>
 				  <div class="form-group row required">
@@ -31,7 +32,7 @@
 					<div class="col-lg-9">
 				      <select class="form-control" name="provider_list" id="provider_list" required>
 				        <option value required>Please select one:</option>
-				        @foreach ($providers as $provider)
+				        @foreach ($providerList as $provider)
 				          <option value="{{ $provider->id }}" {{ ($provider->id == $config->default_provider_fk) ? 'selected' : '' }}>{{ $provider->provider_name }}</option>
 				        @endforeach
 				      </select>

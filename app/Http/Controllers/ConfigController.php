@@ -11,7 +11,8 @@ class ConfigController extends Controller
 {
     private $configData;
     private $adminSections;
-    private $providers;
+    private $providersList;
+    private $validationOptions;
 
     use AdminTrait;
 
@@ -23,8 +24,15 @@ class ConfigController extends Controller
         // Get admin section names and routes for front end.
         $this->adminSections = $this->getAdminSections();
 
-        // Get a list of providers.
-        $this->providers = Provider::all();
+        // Get a list of providersList.
+        $this->providerList = Provider::all();
+
+        // Set all fields as required for validation.
+        $formFields = ['form_heading', 'form_title', 'intro_html', 'provider_list', 'show_multiple_providers', 'use_staff_list'];
+
+        foreach ($formFields as $field) {
+            $this->validationOptions[$field] = 'required';
+        }
     }
 
     /**
@@ -38,7 +46,7 @@ class ConfigController extends Controller
         return view('admin.config', [
             'config' => $this->configData,
             'adminSections' => $this->adminSections,
-            'providers' => $this->providers
+            'providerList' => $this->providerList
         ]);
     }
 
@@ -94,7 +102,10 @@ class ConfigController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Validate then update the Global Config.
+        $request->validate($this->validationOptions);
+
+        dd('passed');
     }
 
     /**
