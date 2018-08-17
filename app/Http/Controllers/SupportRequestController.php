@@ -104,68 +104,23 @@ class SupportRequestController extends Controller
             $this->validationOptions['phone_number'] = ['required'];
         }
 
-        // Validate the data - a redirect will automatically kick in if it fails.
+        // Validate the data - a redirect with validation errors will automatically kick in if it fails.
         $request->validate($this->validationOptions);
 
-        // Now fetch the data.
-        $fieldArray = [];
+        // Validation is successful, so let's build the data for the email template.
+        $fieldArray = $this->buildFieldArray($request);
 
-        // Query the db based on default or selection.
-        if ($this->fieldConfig['provider'] === 'db') {
-            // If providers were fetched from the db for the front end, then we must use the selection to find the provider data.
-            $providerDetails = Provider::where('id', $request->provider_list)->first();
-        } else {
-            // Otherwise, we grab the default provider details.
-            $providerDetails = Provider::where('id', $this->configData->default_provider_fk)->first();
-        }
-
-        // Add details to the array.
-        $fieldArray['provider_name'] = $providerDetails->provider_name;
-        $fieldArray['provider_email'] = $providerDetails->provider_email;
-        $fieldArray['provider_name_fk'] = $providerDetails->id;
-
-        // Fetch staff details based on input values from front end selection, or matching ID in the db.
-        if ($this->fieldConfig['staff'] === 'request') {
-            $fieldArray['first_name'] = $request->first_name;
-            $fieldArray['last_name'] = $request->last_name;
-            $fieldArray['email'] = $request->email;
-        } else {
-            // Query the db only once.
-            $staffDetails = StaffMember::where('id', $request->staff_list)->first();
-
-            // Add details to the array.
-            $fieldArray['first_name'] = $staffDetails->staff_first_name;
-            $fieldArray['last_name'] = $staffDetails->staff_last_name;
-            $fieldArray['email'] = $staffDetails->staff_email;
-        }
-
-        // Set issue type details.
-        $issueDetails = IssueType::where('id', $request->issue_type)->first();
-        $fieldArray['issue'] = $issueDetails->issue_name;
-        $fieldArray['issue_type_fk'] = $issueDetails->id;
-
-        // Add phone number if required.
-        if ($request->preferred_contact === 'phone') {
-            $fieldArray['phone'] = $request->phone_number;
-        } else {
-            $fieldArray['phone'] = 'Not applicable';
-        }
-
-        // These fields are just pulled from the request.
-        $fieldArray['preferred_contact'] = $request->preferred_contact;
-        $fieldArray['details'] = $request->issue_details;
-
-        // Validation is successful - build the email.
+        // Pass the data into the Mailer.
+        // A config method has to be run first, because build() doesn't like to take parameters.
         $supportMailer->buildConfig($fieldArray);
-        $result = $supportMailer->build();
+        $supportMailer->build();
 
-        // Now send it to the provider.
-        Mail::to($providerDetails->provider_email)->send($supportMailer);
+        // Now send the completed email to the specified provider.
+        Mail::to($fieldArray['provider_details']->provider_email)->send($supportMailer);
 
         // Log result to front end and return feedback (Mail::failures() will return an empty array if successful).
         $this->logResults(Mail::failures(), $fieldArray);
 
-        // TODO: Provide success alert on view render.
         return redirect()->route('index');
     }
 
@@ -212,6 +167,58 @@ class SupportRequestController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function buildFieldArray($request)
+    {
+        // Build a master array of data so that we can populate the email template.
+        // Query the db based on default or selection.
+        if ($this->fieldConfig['provider'] === 'db') {
+            // If providers were fetched from the db for the front end, then we must use the selection to find the provider data.
+            $providerDetails = Provider::where('id', $request->provider_list)->first();
+        } else {
+            // Otherwise, we grab the default provider details.
+            $providerDetails = Provider::where('id', $this->configData->default_provider_fk)->first();
+        }
+
+        // Add details to the array.
+        $fieldArray['provider_details'] = $providerDetails;
+        $fieldArray['provider_name'] = $providerDetails->provider_name;
+        $fieldArray['provider_email'] = $providerDetails->provider_email;
+        $fieldArray['provider_name_fk'] = $providerDetails->id;
+
+        // Fetch staff details based on input values from front end selection, or matching ID in the db.
+        if ($this->fieldConfig['staff'] === 'request') {
+            $fieldArray['first_name'] = $request->first_name;
+            $fieldArray['last_name'] = $request->last_name;
+            $fieldArray['email'] = $request->email;
+        } else {
+            // Query the db only once.
+            $staffDetails = StaffMember::where('id', $request->staff_list)->first();
+
+            // Add details to the array.
+            $fieldArray['first_name'] = $staffDetails->staff_first_name;
+            $fieldArray['last_name'] = $staffDetails->staff_last_name;
+            $fieldArray['email'] = $staffDetails->staff_email;
+        }
+
+        // Set issue type details.
+        $issueDetails = IssueType::where('id', $request->issue_type)->first();
+        $fieldArray['issue'] = $issueDetails->issue_name;
+        $fieldArray['issue_type_fk'] = $issueDetails->id;
+
+        // Add phone number if required.
+        if ($request->preferred_contact === 'phone') {
+            $fieldArray['phone'] = $request->phone_number;
+        } else {
+            $fieldArray['phone'] = 'Not applicable';
+        }
+
+        // These fields are just pulled from the request.
+        $fieldArray['preferred_contact'] = $request->preferred_contact;
+        $fieldArray['details'] = $request->issue_details;
+
+        return $fieldArray;
     }
 
     private function logResults($mailFailures, $fieldArray)
