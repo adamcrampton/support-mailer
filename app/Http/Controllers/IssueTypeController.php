@@ -3,9 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\IssueType;
+use App\Traits\AdminTrait;
 
 class IssueTypeController extends Controller
 {
+    private $configData;
+    private $adminSections;
+
+    use AdminTrait;
+
+    public function __construct()
+    {
+        // Get Issue List.
+        // TODO
+
+        // Get global config.
+        $this->configData = $this->getGlobalConfig();
+
+        // Get admin section names and routes for front end.
+        $this->adminSections = $this->getAdminSections();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +32,11 @@ class IssueTypeController extends Controller
      */
     public function index()
     {
-        //
+        // Issue Type home page.
+        return view('admin.issue_type', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections
+        ]);
     }
 
     /**

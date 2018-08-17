@@ -4,25 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Config;
+use App\Traits\AdminTrait;
 
 class AdminController extends Controller
 {
     private $configData;
     private $adminSections;
 
-    public function __construct(Config $config)
+    use AdminTrait;
+
+    public function __construct()
     {
         // Get global config.
-        $this->configData = $config->getConfig();
+        $this->configData = $this->getGlobalConfig();
 
-        // Prepare admin sections 'name' => 'routename'.
-        $this->adminSections = [
-            'Global Configuration' => 'config',
-            'Issue Types' => 'issue_types',
-            'Providers' => 'providers',
-            'Staff Members' => 'staff_members',
-            'Manage Users' => 'users'
-        ];
+        // Get admin section names and routes for front end.
+        $this->adminSections = $this->getAdminSections();
     }
 
     /**

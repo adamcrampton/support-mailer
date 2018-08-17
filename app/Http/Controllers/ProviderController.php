@@ -3,9 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Provider;
+use App\Traits\AdminTrait;
 
 class ProviderController extends Controller
 {
+    private $configData;
+    private $adminSections;
+
+    use AdminTrait;
+
+    public function __construct()
+    {
+        // Get Provider List.
+        // TODO
+
+        // Get global config.
+        $this->configData = $this->getGlobalConfig();
+
+        // Get admin section names and routes for front end.
+        $this->adminSections = $this->getAdminSections();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +32,11 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        //
+        // Provider home page.
+        return view('admin.provider', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections
+        ]);    
     }
 
     /**

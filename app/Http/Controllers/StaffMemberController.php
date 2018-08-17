@@ -3,9 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\StaffMember;
+use App\Traits\AdminTrait;
 
 class StaffMemberController extends Controller
 {
+    private $configData;
+    private $adminSections;
+
+    use AdminTrait;
+
+    public function __construct()
+    {
+        // Get Staff List.
+        // TODO
+
+        // Get global config.
+        $this->configData = $this->getGlobalConfig();
+
+        // Get admin section names and routes for front end.
+        $this->adminSections = $this->getAdminSections();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +32,11 @@ class StaffMemberController extends Controller
      */
     public function index()
     {
-        //
+        // Staff Member home page.
+        return view('admin.staff_member', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections
+        ]); 
     }
 
     /**

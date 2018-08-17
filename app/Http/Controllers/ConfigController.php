@@ -3,9 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Config;
+use App\Traits\AdminTrait;
 
 class ConfigController extends Controller
 {
+    private $configData;
+    private $adminSections;
+
+    use AdminTrait;
+
+    public function __construct()
+    {
+        // Get global config.
+        $this->configData = $this->getGlobalConfig();
+
+        // Get admin section names and routes for front end.
+        $this->adminSections = $this->getAdminSections();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +29,11 @@ class ConfigController extends Controller
      */
     public function index()
     {
-        //
+        // Global Config home page.
+        return view('admin.config', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections
+        ]);
     }
 
     /**

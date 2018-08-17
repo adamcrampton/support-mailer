@@ -3,9 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Traits\AdminTrait;
 
 class UserController extends Controller
 {
+    private $configData;
+    private $adminSections;
+
+    use AdminTrait;
+
+    public function __construct()
+    {
+        // Get User List.
+        // TODO
+
+        // Get global config.
+        $this->configData = $this->getGlobalConfig();
+
+        // Get admin section names and routes for front end.
+        $this->adminSections = $this->getAdminSections();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +32,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // User Management home page.
+        return view('admin.user', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections
+        ]);  
     }
 
     /**
