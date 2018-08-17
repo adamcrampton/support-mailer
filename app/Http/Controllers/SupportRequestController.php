@@ -36,29 +36,21 @@ class SupportRequestController extends Controller
         $this->staffMembers = $this->configData->use_staff_list ? $staffMember->getStaffMembers() : [];
 
         // Set default validation options.
-        $this->validationOptions = [
-            'preferred_contact' => [
-                'required'
-            ],
-            'issue_type' => [
-                'required'
-            ],
-            'issue_details' => [
-                'required'
-            ],
-        ];
+        $this->validationOptions['preferred_contact'] = 'required';
+        $this->validationOptions['issue_type'] = 'required';
+        $this->validationOptions['issue_details'] = 'required';
 
         // Set additional validation options based on global config.
         if (is_array($this->providerList)) { // This will be a string (default provider fk) if there's no list.
-            $this->validationOptions['provider_list'] = ['required'];
+            $this->validationOptions['provider_list'] = 'required';
         }
 
         if (! empty($this->staffMembers)) {
-            $this->validationOptions['staff_list'] = ['required'];
+            $this->validationOptions['staff_list'] = 'required';
         } else {
-            $this->validationOptions['first_name'] = ['required'];
-            $this->validationOptions['last_name'] = ['required'];
-            $this->validationOptions['email'] = ['required|email'];
+            $this->validationOptions['first_name'] = 'required';
+            $this->validationOptions['last_name'] = 'required';
+            $this->validationOptions['email'] = 'required|email';
         }
 
         // Set the actual fields we are going to eventually pass to the mailer.
