@@ -15,6 +15,25 @@
   </head>
   <body>
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <p>Sorry, there was a problem submitting your form. Details:</p>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @elseif (session()->has('warning'))
+      <div class="alert alert-warning">
+        {!! session()->get('warning') !!}
+      </div>
+    @elseif (session()->has('success'))
+      <div class="alert alert-success">
+        {{ session()->get('success') }}
+      </div>
+    @endif
+
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
