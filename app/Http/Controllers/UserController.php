@@ -3,28 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Config;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
-    private $configData;
-    private $adminSections;
-
-    public function __construct(Config $config)
-    {
-        // Get global config.
-        $this->configData = $config->getConfig();
-
-        // Prepare admin sections 'name' => 'routename'.
-        $this->adminSections = [
-            'Global Configuration' => 'config',
-            'Issue Types' => 'issue_types',
-            'Providers' => 'providers',
-            'Staff Members' => 'staff_members',
-            'Manage Users' => 'users'
-        ];
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -32,11 +13,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        // Admin home page.
-        return view('admin.index', [
-            'config' => $this->configData,
-            'adminSections' => $this->adminSections
-        ]);
+        //
     }
 
     /**
