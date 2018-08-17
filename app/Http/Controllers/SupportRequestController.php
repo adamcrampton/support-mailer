@@ -113,7 +113,14 @@ class SupportRequestController extends Controller
         // Log result to front end and return feedback (Mail::failures() will return an empty array if successful).
         $this->logResults(Mail::failures(), $fieldArray);
 
-        return redirect()->route('index');
+        // Redirect to front end with messaging.
+        if (empty(Mail::failures())) {
+            return redirect()->route('index')->with('success', 'Success! Your ticket has been submitted.');
+        }
+
+        $warningMessage = 'Sorry, we had a problem emailing your form. Please email <a href="mailto:' . $fieldArray["provider_email"] . '">' . $fieldArray['provider_email'] . '</a> directly.';
+
+        return redirect()->route('index')->with('warning', $warningMessage);
     }
 
     /**

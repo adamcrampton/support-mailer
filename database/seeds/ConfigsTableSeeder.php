@@ -15,6 +15,7 @@ class ConfigsTableSeeder extends Seeder
         // Add default config.
         DB::table('configs')->insert([
             'config_name' => 'global',
+            'form_heading' => 'Support Mailer',
             'form_title' => 'Create your support ticket here!',
         	'intro_html' => '<p>Here is the default intro text, which will sit above the form.</p>',
         	'default_provider_fk' => 1,

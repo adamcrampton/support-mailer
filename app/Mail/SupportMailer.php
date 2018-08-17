@@ -24,8 +24,6 @@ class SupportMailer extends Mailable
      */
     public function build()
     {     
-        // dd($this->emailFrom[1]);
-
         return $this->from($this->emailFrom[0], $this->emailFrom[1])
             ->subject($this->emailSubject)
             ->view('mail.support_request')

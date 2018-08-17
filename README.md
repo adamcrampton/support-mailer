@@ -1,6 +1,5 @@
 # support-mailer
 ## TODO List
-* Provide success feedback when email is sent
 * Add file uploading functionality
 * Make issue list multi-selectable
 * Build admin front end index with Auth

@@ -7,28 +7,19 @@
 <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="#">Support Mailer</a>
-        {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="#">{{ $config->form_heading }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home
+              <a class="nav-link" href="/admin">Admin Login
                 <span class="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Menu Link 1</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Menu Link 2</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Menu Link 3</a>
-            </li>
           </ul>
-        </div> --}}
+        </div>
       </div>
     </nav>
 
@@ -41,6 +32,14 @@
             @endforeach
         </ul>
     </div>
+    @elseif (session()->has('warning'))
+      <div class="alert alert-warning">
+        {!! session()->get('warning') !!}
+      </div>
+    @elseif (session()->has('success'))
+      <div class="alert alert-success">
+        {{ session()->get('success') }}
+      </div>
     @endif
 
     <!-- Page Content -->
