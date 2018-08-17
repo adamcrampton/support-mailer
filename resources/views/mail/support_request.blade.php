@@ -3,7 +3,7 @@
     <title>Support Request</title>
   </head>
   <body>   
-    <p>Hello {{ $provider }},</p>
+    <p>Hello {{ $provider_name }},</p>
     <p>This is {{ $first_name }} {{ $last_name }}, and I need help with:
     <ul>
       <li>{{ $issue }}</li>

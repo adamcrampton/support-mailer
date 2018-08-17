@@ -15,13 +15,15 @@ class CreateSubmissionLogsTable extends Migration
     {
         Schema::create('submission_logs', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('email_sent');
             $table->string('staff_name');
-            $table->string('staff_email')->default('not specified');
+            $table->string('staff_email');
             $table->string('staff_phone')->default('not specified');
             $table->smallInteger('provider_name_fk');
             $table->string('contact_method');
             $table->smallInteger('issue_type_fk');       
             $table->string('details_field');
+            $table->text('errors');
             $table->timestamps();
         });
     }

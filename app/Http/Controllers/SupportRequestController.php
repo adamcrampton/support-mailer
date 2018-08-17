@@ -8,6 +8,7 @@ use App\Models\Config;
 use App\Models\Provider;
 use App\Models\IssueType;
 use App\Models\StaffMember;
+use App\Models\SubmissionLog;
 use App\Mail\SupportMailer;
 
 class SupportRequestController extends Controller
@@ -110,9 +111,6 @@ class SupportRequestController extends Controller
         // Now fetch the data.
         $fieldArray = [];
 
-        // Fetch provider based on a config default or a front end selection.
-        $fieldArray['provider'] = ($this->fieldConfig['provider'] === 'request') ? Provider::where('id', $request->provider_list)->first()->provider_name : Provider::where('id', $this->configData->default_provider_fk)->first()->provider_name;
-
         // Query the db based on default or selection.
         if ($this->fieldConfig['provider'] === 'request') {
             $providerDetails = Provider::where('id', $request->provider_list)->first();
@@ -123,6 +121,7 @@ class SupportRequestController extends Controller
         // Add details to the array.
         $fieldArray['provider_name'] = $providerDetails->provider_name;
         $fieldArray['provider_email'] = $providerDetails->provider_email;
+        $fieldArray['provider_name_fk'] = $providerDetails->id;
 
         // Fetch staff details based on input values from front end selection, or matching ID in the db.
         if ($this->fieldConfig['staff'] === 'request') {
@@ -139,7 +138,10 @@ class SupportRequestController extends Controller
             $fieldArray['email'] = $staffDetails->staff_email;
         }
 
-        $fieldArray['issue'] = IssueType::where('id', $request->issue_type)->first()->issue_name;
+        // Set issue type details.
+        $issueDetails = IssueType::where('id', $request->issue_type)->first();
+        $fieldArray['issue'] = $issueDetails->issue_name;
+        $fieldArray['issue_type_fk'] = $issueDetails->id;
 
         // Add phone number if required.
         if ($request->preferred_contact === 'phone') {
@@ -157,11 +159,13 @@ class SupportRequestController extends Controller
         $result = $supportMailer->build();
 
         // Now send it to the provider.
-        $result = Mail::to($providerDetails->provider_email)->send($supportMailer);
+        Mail::to($providerDetails->provider_email)->send($supportMailer);
 
-        // TODO: Log results to table.
+        // Log result to front end and return feedback (Mail::failures() will return an empty array if successful).
+        $this->logResults(Mail::failures(), $fieldArray);
+
         // TODO: Provide success alert on view render.
-        // return redirect()->route('index');
+        return redirect()->route('index');
     }
 
     /**
@@ -207,5 +211,26 @@ class SupportRequestController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function logResults($mailFailures, $fieldArray)
+    {
+        // Encode failures - this will be an empty object if it was successful.
+        $failures = json_encode($mailFailures);
+
+        // Write to the log table.
+        $insertValues = [
+            'staff_name' => $fieldArray['first_name'] . ' ' . $fieldArray['last_name'],
+            'staff_email' => $fieldArray['email'],
+            'staff_phone' => $fieldArray['phone'],
+            'provider_name_fk' => $fieldArray['provider_name_fk'],
+            'contact_method' => $fieldArray['preferred_contact'],
+            'issue_type_fk' => $fieldArray['issue_type_fk'],
+            'details_field' => $fieldArray['details'],
+            'email_sent' => empty($mailFailures),
+            'errors' => $failures
+        ];
+
+        SubmissionLog::create($insertValues);
     }
 }
