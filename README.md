@@ -25,6 +25,8 @@ Two quick notes for Windows + Vagrant (e.g. Homestead) devs:
 * Unless you already have npm running properly in your environment, save yourself the hassle and install node.js for Windows now (unless you feel like wrasslin' with Vagrant for hours).
 * Don't forget to update your hosts file, as well as Homestead.yaml if you're using it.
 
+Oh, one other thing - I highly recommend using mailtrap.io for testing your dev output. It's really simple to set up and is easier than building render methods (ymmv of course).
+
 As follows:
 1. Clone the repo
 1. Run composer install
