@@ -1,4 +1,12 @@
 # support-mailer
+## TODO List
+* Provide success feedback when email is sent
+* Add file uploading functionality
+* Make issue list multi-selectable
+* Build admin front end index with Auth
+* Build admin front end pages to manage Global Config, Issue Types, Providers, Staff Members, and Users
+* Build log viewer
+
 ## Introduction
 Simple app for building support request emails
 
