@@ -35,9 +35,12 @@
     @endif
 
     <!-- Navigation -->
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
         <a class="navbar-brand" href="/">{{ $config->form_heading }}</a>
+        {{-- Only show nav items if logged in. --}}
+        @if(Auth::check())
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -53,8 +56,12 @@
               <a class="nav-link" href="/{{ $route }}">{{ $name }}</a>
             </li>
             @endforeach
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Log out</a>
+            </li>
           </ul>
         </div>
+        @endif
       </div>
     </nav>
 

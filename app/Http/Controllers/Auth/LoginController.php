@@ -4,20 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\Models\Config;
+use App\Traits\AdminTrait;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
+    private $configData;
 
+    use AdminTrait;
     use AuthenticatesUsers;
 
     /**
@@ -25,7 +20,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin';
 
     /**
      * Create a new controller instance.
@@ -35,5 +30,27 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+
+        // Get global config.
+        $this->configData = $this->getGlobalConfig();
+        $this->adminSections = $this->getAdminSections();
+    }
+
+    // Override default functions so we can can configure routing and pass data around.
+    public function showLoginForm()
+    {
+        return view('auth.login', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/admin');
     }
 }

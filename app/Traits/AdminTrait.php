@@ -11,7 +11,7 @@ trait AdminTrait
 		// Return list of admin sections.
 		// Prepare admin sections 'name' => 'routename'.
         return [
-            'Global Configuration' => 'config',
+            'Global Config' => 'config',
             'Issue Types' => 'issue_types',
             'Providers' => 'providers',
             'Staff Members' => 'staff_members',

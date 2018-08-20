@@ -13,3 +13,7 @@ Route::resource('providers', 'ProviderController');
 Route::resource('staff_members', 'StaffMemberController');
 Route::resource('logs', 'SubmissionLogController');
 Route::resource('users', 'UserController');
+
+// Auth Routes.
+Auth::routes();
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');

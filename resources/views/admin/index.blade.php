@@ -1,6 +1,13 @@
 @extends('layouts.admin-base')
 
 @section('content')
+    <div class="card-body">
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+    </div>
     <!-- Page Content -->
     <div class="container">
       <div class="row">
