@@ -18,6 +18,9 @@ class UserController extends Controller
         // Get User List.
         // TODO
 
+        // Require authentication.
+        $this->middleware('auth');
+
         // Get global config.
         $this->configData = $this->getGlobalConfig();
 

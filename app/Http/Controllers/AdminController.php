@@ -15,7 +15,7 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        // Authentication.
+        // Require authentication.
         $this->middleware('auth');
 
         // Get global config.

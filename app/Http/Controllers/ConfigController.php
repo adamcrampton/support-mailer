@@ -18,6 +18,9 @@ class ConfigController extends Controller
 
     public function __construct()
     {
+        // Require authentication.
+        $this->middleware('auth');
+        
         // Get global config.
         $this->configData = $this->getGlobalConfig();
 

@@ -18,6 +18,9 @@ class StaffMemberController extends Controller
         // Get Staff List.
         // TODO
 
+        // Require authentication.
+        $this->middleware('auth');
+
         // Get global config.
         $this->configData = $this->getGlobalConfig();
 

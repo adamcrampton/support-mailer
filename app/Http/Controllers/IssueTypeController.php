@@ -18,6 +18,9 @@ class IssueTypeController extends Controller
         // Get Issue List.
         // TODO
 
+        // Require authentication.
+        $this->middleware('auth');
+
         // Get global config.
         $this->configData = $this->getGlobalConfig();
 
