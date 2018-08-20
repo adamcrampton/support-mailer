@@ -11,7 +11,7 @@
 					<div class="form-group row required">
 				      <label class="col-lg-3 col-form-label form-control-label">Add new Issue Type</label>
 				      <div class="col-lg-9">
-				          {{ Form::text('form_heading', null, ['class' => 'form-control', 'id' => 'form_heading', 'required']) }}
+				          {{ Form::text('issue_name', null, ['class' => 'form-control', 'id' => 'issue_name', 'required']) }}
 				      </div>
 				  </div>
 				   <div class="form-group row">

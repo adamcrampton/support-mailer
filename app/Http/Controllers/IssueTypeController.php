@@ -11,6 +11,7 @@ class IssueTypeController extends Controller
     private $configData;
     private $adminSections;
     private $issueList;
+    private $insertValidateOptions;
 
     use AdminTrait;
 
@@ -27,6 +28,13 @@ class IssueTypeController extends Controller
 
         // Get admin section names and routes for front end.
         $this->adminSections = $this->getAdminSections();
+
+        // Set insert fields as required for validation.
+        $formFields = ['issue_name'];
+
+        foreach ($formFields as $field) {
+            $this->validationOptions[$field] = 'required';
+        }
     }
 
     /**
@@ -38,6 +46,9 @@ class IssueTypeController extends Controller
     {
         // Issue Type home page.
         // Since we have a single page for adding and editing these records, no need to use the create method.
+
+        // TODO: Sort by name.
+
         return view('admin.issue_type', [
             'config' => $this->configData,
             'adminSections' => $this->adminSections,
@@ -61,9 +72,17 @@ class IssueTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, IssueType $issueType)
     {
-        //
+        // Validate then insert if successful.
+        $request->validate($this->validationOptions);
+
+        $issueType->issue_name = $request->issue_name;
+
+        $issueType->save();
+
+        // Return to index with success message.
+        return redirect()->route('issue_types.index')->with('success', 'Success! New Issue Type <strong>' . $request->issue_name . '</strong> has been added.');
     }
 
     /**
@@ -130,4 +149,6 @@ class IssueTypeController extends Controller
     {
         //
     }
+
+
 }
