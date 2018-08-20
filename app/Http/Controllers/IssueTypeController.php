@@ -138,6 +138,76 @@ class IssueTypeController extends Controller
         Validator::make($request->all(), [
             'issue_type.*.name' => 'required'
         ])->validate();
+
+
+        // Check for any items tagged for deletion. If found, add to array for batch deletion.
+        $deleteArray = [];
+
+        foreach ($request->issue_type as $item => $fieldValues) {
+            if (array_key_exists('delete', $fieldValues)) {
+                $deleteArray[$fieldValues['original_value']] = $fieldValues['id'];
+            }
+        }
+
+        // Determine which fields have changed, and prepare array for batch update.
+        $updateArray = [];        
+
+        foreach ($request->issue_type as $item => $fieldValues) {
+            if ($fieldValues['original_value'] !== $fieldValues['name']) {
+                $updateArray[$fieldValues['id']]['original_value'] = $fieldValues['original_value'];
+                $updateArray[$fieldValues['id']]['new_value'] = $fieldValues['name'];
+            }
+        }
+
+        // Just return with warning if no items were updated or deleted.
+        if (empty($deleteArray) && empty($updateArray)) {
+            return redirect()->route('issue_types.index')->with('warning', 'No items to update or delete.');
+        }
+
+        // Unset any items tagged for deletion so we don't try to update them.
+        // This may occur in a scenario where the field is edited and 'Delete' is also ticked.
+        foreach ($deleteArray as $issueTypeId) {
+            unset($updateArray[$issueTypeId]);
+        }
+
+        // Process the updates (if there are any).
+        if (! empty($updateArray)) {
+            foreach ($updateArray as $issueTypeId => $updatedValues) {
+                IssueType::where('id', $issueTypeId)->update(['issue_name' => $updatedValues['new_value']]);
+            }
+        }
+
+        // Process the deletions (if there are any).
+        if (! empty($deleteArray)) {
+            IssueType::destroy($deleteArray);
+        }
+
+        // Build sucess messages to pass back to the front end.
+        $successMessage = '<p>Success! The following updates were made:</p>';
+
+        if (! empty($updateArray)) {
+            $successMessage .= '<p>'. count($updateArray).' record(s) were updated:</p>';
+            
+            $successMessage .= '<ul>';
+
+            foreach ($updateArray as $issueTypeId => $updatedValues) {
+                $successMessage .= '<li>'. $updatedValues['original_value'] .' updated to '. $updatedValues['new_value'] .'</li>';
+            }
+            $successMessage .= '</ul>';
+        }
+
+        if (! empty($deleteArray)) {
+            $successMessage .= '<p>'. count($deleteArray).' record(s) were deleted:</p>';
+            $successMessage .= '<ul>';
+
+            foreach ($deleteArray as $itemName => $itemId) {
+                $successMessage .= '<li>'. $itemName .'</li>';
+            }
+
+            $successMessage .= '</ul>';   
+        }
+
+        return redirect()->route('issue_types.index')->with('success', $successMessage);
     }
 
     /**
