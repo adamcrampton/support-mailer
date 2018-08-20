@@ -9,6 +9,6 @@ class IssueType extends Model
     // Get all providers.
     public function getIssueTypes()
     {
-    	return IssueType::all();
+    	return IssueType::all()->sortBy('issue_name');
     }
 }

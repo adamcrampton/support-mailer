@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\IssueType;
 use App\Traits\AdminTrait;
+use Validator;
 
 class IssueTypeController extends Controller
 {
@@ -46,8 +47,6 @@ class IssueTypeController extends Controller
     {
         // Issue Type home page.
         // Since we have a single page for adding and editing these records, no need to use the create method.
-
-        // TODO: Sort by name.
 
         return view('admin.issue_type', [
             'config' => $this->configData,
@@ -129,14 +128,16 @@ class IssueTypeController extends Controller
     {
         /**
         TODO:
-        - Validate
         - Process updates
         - Process deletions
         - Compile feedback for front end
         - Return view with data
         */
 
-        dd($request->all());
+        // Validate all fields in the request - all required and must be unique.
+        Validator::make($request->all(), [
+            'issue_type.*.name' => 'required'
+        ])->validate();
     }
 
     /**
