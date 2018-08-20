@@ -126,14 +126,6 @@ class IssueTypeController extends Controller
      */
     public function batchUpdate(Request $request)
     {
-        /**
-        TODO:
-        - Process updates
-        - Process deletions
-        - Compile feedback for front end
-        - Return view with data
-        */
-
         // Validate all fields in the request - all required and must be unique.
         Validator::make($request->all(), [
             'issue_type.*.name' => 'required'
