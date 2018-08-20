@@ -1,16 +1,66 @@
 @extends('layouts.admin-base')
 
 @section('content')
-    <!-- Page Content -->
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h1 class="mt-5">Issue Types</h1>
-          
-
-
-         </div>
-        </div>
-      </div>
-    </div>
+<!-- Page Content -->
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="mt-5">Issue Types</h1>
+				<div class="card-body">
+					{!! Form::open(['action' => ['IssueTypeController@store'], 'class' => 'form']) !!}
+					<div class="form-group row required">
+				      <label class="col-lg-3 col-form-label form-control-label">Add new Issue Type</label>
+				      <div class="col-lg-9">
+				          {{ Form::text('form_heading', null, ['class' => 'form-control', 'id' => 'form_heading', 'required']) }}
+				      </div>
+				  </div>
+				   <div class="form-group row">
+				      <label class="col-lg-3 col-form-label form-control-label"></label>
+				      <div class="col-lg-9">
+				          <input type="reset" class="btn btn-secondary" value="Cancel">
+				          {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+				      </div>
+				  </div>
+				{!! Form::close() !!}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="mt-5">Manage Issue Types</h1>
+				{!! Form::open(['action' => ['IssueTypeController@batchUpdate'], 'class' => 'form']) !!}
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Name</th>
+							<th scope="col" class="text-center">Delete</th>
+						</tr>
+					</thead>
+					@foreach($issueList as $index => $issue)
+						<tr>
+							<td>
+								{{-- Store id and original value for each row - to be processed as an array in the backend. --}}
+								{{ Form::text('issue_type['. $index .'][id]', $issue->id, ['style' => 'display:none']) }}
+								{{ Form::text('issue_type['. $index .'][original_value]', $issue->issue_name, ['style' => 'display:none']) }}
+								{{ Form::text('issue_type['. $index .'][name]', $issue->issue_name, ['class' => 'form-control', 'id' => 'form_heading', 'required']) }}
+							</td>
+							<td class="text-center">
+								<div class="form-check">
+								{{-- There will either be a value or not in $_POST, so the actual value of the field set doesn't matter. --}}
+								{{ Form::checkbox('issue_type['. $index .'][delete]', null, false, ['class' => 'form-check-input']) }}
+								</div>
+							</td>
+						</tr>
+					@endforeach
+						<tr>
+							<td colspan="2" class="text-right">
+								<input type="reset" class="btn btn-secondary" value="Cancel">
+								{!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
+							</td>
+						</tr>
+				</table>
+				{!! Form::close() !!}
+			</div>
+		</div>
+	</div>
 @endsection

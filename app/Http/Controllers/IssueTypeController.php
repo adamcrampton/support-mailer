@@ -10,13 +10,14 @@ class IssueTypeController extends Controller
 {
     private $configData;
     private $adminSections;
+    private $issueList;
 
     use AdminTrait;
 
-    public function __construct()
+    public function __construct(IssueType $issueType)
     {
         // Get Issue List.
-        // TODO
+        $this->issueList = $issueType->getIssueTypes();
 
         // Require authentication.
         $this->middleware('auth');
@@ -36,9 +37,11 @@ class IssueTypeController extends Controller
     public function index()
     {
         // Issue Type home page.
+        // Since we have a single page for adding and editing these records, no need to use the create method.
         return view('admin.issue_type', [
             'config' => $this->configData,
-            'adminSections' => $this->adminSections
+            'adminSections' => $this->adminSections,
+            'issueList' => $this->issueList
         ]);
     }
 
@@ -95,6 +98,26 @@ class IssueTypeController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    /**
+     * Receive an array of data from multi-row field and process a batch update.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function batchUpdate(Request $request)
+    {
+        /**
+        TODO:
+        - Validate
+        - Process updates
+        - Process deletions
+        - Compile feedback for front end
+        - Return view with data
+        */
+
+        dd($request->all());
     }
 
     /**
