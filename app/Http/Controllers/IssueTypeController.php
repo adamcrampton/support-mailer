@@ -129,11 +129,10 @@ class IssueTypeController extends AdminSectionController
             foreach ($updateArray as $issueTypeId => $updatedValues) {
                 foreach ($updatedValues as $value) {
                     IssueType::where('id', $issueTypeId)->update([
-                        'issue_name' => $updatedValues['new_value']
+                        $value['column_name'] => $value['new_value']
                     ]);
                 }
             }
-
         }
 
         // Process the deletions (if there are any).
