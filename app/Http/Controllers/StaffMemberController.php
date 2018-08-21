@@ -16,7 +16,7 @@ class StaffMemberController extends AdminSectionController
         // Initialise parent constructor.
         parent::__construct();
 
-        // Get Issue List.
+        // Get Staff List.
         $this->staffList = $staffMember->getStaffMembers();
     }
 
@@ -56,15 +56,16 @@ class StaffMemberController extends AdminSectionController
         // Validate then insert if successful.
         $request->validate($this->insertValidationOptions);
 
-        $staffMember->first_name = $request->first_name;
-        $staffMember->last_name = $request->last_name;
-        $staffMember->email = $request->email;
+        $staffMember->staff_name = $request->first_name . ' ' . $request->last_name;
+        $staffMember->staff_first_name = $request->first_name;
+        $staffMember->staff_last_name = $request->last_name;
+        $staffMember->staff_email = $request->staff_email;
 
 
-        $issueType->save();
+        $staffMember->save();
 
         // Return to index with success message.
-        return redirect()->route('issue_types.index')->with('success', 'Success! New Issue Type <strong>' . $request->issue_name . '</strong> has been added.');
+        return redirect()->route('staff_members.index')->with('success', 'Success! New Staff Member <strong>' . $request->staff_first_name . '</strong> has been added.');
     }
 
     /**
@@ -109,6 +110,8 @@ class StaffMemberController extends AdminSectionController
      */
     public function batchUpdate(Request $request)
     {
+        #!# Going to have to come up with some way to generate a staff_name field into the $request object for each row in the front end. Don't do it here
+
         // Run each row through the validator.
         Validator::make($request->all(), $this->updateValidationOptions)->validate();
 
@@ -116,7 +119,7 @@ class StaffMemberController extends AdminSectionController
         $deleteArray = $this->buildDeleteArray($request, 'staff');
 
         // Determine which fields have changed, and prepare array for batch update.
-        $updateArray = $this->buildUpdateArray($request, 'staff', ['staff_first_name', 'staff_last_name', 'staff_email']);   
+        $updateArray = $this->buildUpdateArray($request, 'staff', ['staff_name', 'staff_first_name', 'staff_last_name', 'staff_email']);   
 
         // Just return with warning if no items were updated or deleted.
         $this->checkForRecordChanges($deleteArray, $updateArray, 'staff_members.index');

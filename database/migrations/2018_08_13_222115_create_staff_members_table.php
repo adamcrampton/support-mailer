@@ -17,6 +17,7 @@ class CreateStaffMembersTable extends Migration
             $table->increments('id');
             $table->string('staff_first_name');
             $table->string('staff_last_name');
+            $table->string('staff_name');
             $table->string('staff_email');
             $table->timestamps();
         });

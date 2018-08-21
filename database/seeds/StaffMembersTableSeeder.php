@@ -16,6 +16,7 @@ class StaffMembersTableSeeder extends Seeder
         DB::table('staff_members')->insert([
             'staff_first_name' => 'Example',
             'staff_last_name' => 'Staff',
+            'staff_name' => 'Example Staff',
             'staff_email' => 'staff.member@example.com',
         	'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         	'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
