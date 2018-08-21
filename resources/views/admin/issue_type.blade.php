@@ -41,14 +41,14 @@
 						<tr>
 							<td>
 								{{-- Store id and original value for each row - to be processed as an array in the backend. --}}
-								{{ Form::text('issue_type['. $index .'][id]', $issue->id, ['style' => 'display:none']) }}
-								{{ Form::text('issue_type['. $index .'][original_value_issue_name]', $issue->issue_name, ['style' => 'display:none']) }}
-								{{ Form::text('issue_type['. $index .'][issue_name]', $issue->issue_name, ['class' => 'form-control', 'id' => 'issue_name', 'required']) }}
+								{{ Form::text('issue['. $index .'][id]', $issue->id, ['style' => 'display:none']) }}
+								{{ Form::text('issue['. $index .'][original_value_issue_name]', $issue->issue_name, ['style' => 'display:none']) }}
+								{{ Form::text('issue['. $index .'][issue_name]', $issue->issue_name, ['class' => 'form-control', 'id' => 'issue_name', 'required']) }}
 							</td>
 							<td class="text-center">
 								<div class="form-check">
 								{{-- There will either be a value or not in $_POST, so the actual value of the field set doesn't matter. --}}
-								{{ Form::checkbox('issue_type['. $index .'][delete]', null, false, ['class' => 'form-check-input']) }}
+								{{ Form::checkbox('issue['. $index .'][delete]', null, false, ['class' => 'form-check-input']) }}
 								</div>
 							</td>
 						</tr>

@@ -112,10 +112,10 @@ class IssueTypeController extends AdminSectionController
         Validator::make($request->all(), $this->updateValidationOptions)->validate();
 
         // Check for any items tagged for deletion. If found, add to array for batch deletion.
-        $deleteArray = $this->buildDeleteArray($request, 'issue_type');
+        $deleteArray = $this->buildDeleteArray($request, 'issue');
 
         // Determine which fields have changed, and prepare array for batch update.
-        $updateArray = $this->buildUpdateArray($request, 'issue_type', ['issue_name']);        
+        $updateArray = $this->buildUpdateArray($request, 'issue', ['issue_name']);        
 
         // Just return with warning if no items were updated or deleted.
         $this->checkForRecordChanges($deleteArray, $updateArray, 'issue_types.index');
