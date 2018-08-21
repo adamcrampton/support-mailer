@@ -7,35 +7,17 @@ use App\Models\Config;
 use App\Models\Provider;
 use App\Traits\AdminTrait;
 
-class ConfigController extends Controller
+class ConfigController extends AdminSectionController
 {
-    private $configData;
-    private $adminSections;
-    private $providersList;
-    private $validationOptions;
-
-    use AdminTrait;
+    protected $controllerType = 'config';
 
     public function __construct()
     {
-        // Require authentication.
-        $this->middleware('auth');
-        
-        // Get global config.
-        $this->configData = $this->getGlobalConfig();
-
-        // Get admin section names and routes for front end.
-        $this->adminSections = $this->getAdminSections();
+        // Initialise parent constructor.
+        parent::__construct();
 
         // Get a list of providersList.
         $this->providerList = Provider::all();
-
-        // Set all fields as required for validation.
-        $formFields = ['form_heading', 'form_title', 'intro_html', 'provider_list', 'show_multiple_providers', 'use_staff_list'];
-
-        foreach ($formFields as $field) {
-            $this->validationOptions[$field] = 'required';
-        }
     }
 
     /**
@@ -106,7 +88,7 @@ class ConfigController extends Controller
     public function update(Request $request, $id)
     {
         // Validate then update the Global Config.
-        $request->validate($this->validationOptions);
+        $request->validate($this->updateValidationOptions);
 
         // Set up values for update.
         $updateArray = [

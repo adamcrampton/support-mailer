@@ -6,23 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Config;
 use App\Traits\AdminTrait;
 
-class AdminController extends Controller
+class AdminController extends AdminSectionController
 {
-    private $configData;
-    private $adminSections;
-
-    use AdminTrait;
+    protected $controllerType = 'admin';
 
     public function __construct()
     {
-        // Require authentication.
-        $this->middleware('auth');
-
-        // Get global config.
-        $this->configData = $this->getGlobalConfig();
-
-        // Get admin section names and routes for front end.
-        $this->adminSections = $this->getAdminSections();
+        // Initialise parent constructor.
+        parent::__construct();
     }
 
     /**
