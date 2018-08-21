@@ -16,8 +16,11 @@
   <body>
 
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger" role="alert">
         <p>Sorry, there was a problem submitting your form. Details:</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -25,11 +28,17 @@
         </ul>
     </div>
     @elseif (session()->has('warning'))
-      <div class="alert alert-warning">
+      <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
         {!! session()->get('warning') !!}
       </div>
     @elseif (session()->has('success'))
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
         {!! session()->get('success') !!}
       </div>
     @endif
