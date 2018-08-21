@@ -111,7 +111,7 @@ class AdminSectionController extends Controller
             foreach ($updateArray as $issueTypeId => $updates) {
             	$successMessage .= '<ul>';
             	foreach ($updates as $updatedValues) {
-            		$successMessage .= '<li>'. $updatedValues['original_value'] .' updated to '. $updatedValues['new_value'] .'</li>';
+            		$successMessage .= '<li><strong>'. $updatedValues['original_value'] .'</strong> updated to <strong>'. $updatedValues['new_value'] .'</strong></li>';
             	}
             	$successMessage .= '</ul>';
             }  
