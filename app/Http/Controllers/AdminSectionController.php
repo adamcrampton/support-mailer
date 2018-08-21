@@ -135,6 +135,17 @@ class AdminSectionController extends Controller
     {
     	// Depending on the admin page, return the set of required validation rules.
     	switch ($controllerType) {
+    		case 'config':
+    			$this->insertValidationOptions = [];
+    			$this->updateValidationOptions = [
+    				'form_heading' => 'required', 
+    				'form_title' => 'required', 
+    				'intro_html' => 'required', 
+    				'provider_list' => 'required', 
+    				'show_multiple_providers' => 'required', 
+    				'use_staff_list' => 'required'
+    			];
+
     		case 'issueType':
     			$this->insertValidationOptions = [
     				'issue_name' => 'required'
@@ -144,18 +155,6 @@ class AdminSectionController extends Controller
     			];
     			break;
 
-    		case 'config':
-    			$this->insertValidationOptions = [];
-
-    			$this->updateValidationOptions = [
-    				'form_heading' => 'required', 
-    				'form_title' => 'required', 
-    				'intro_html' => 'required', 
-    				'provider_list' => 'required', 
-    				'show_multiple_providers' => 'required', 
-    				'use_staff_list' => 'required'
-    			];
-    		
     		case 'provider':
     			$this->insertValidationOptions = [
     				'provider_name' => 'required',
@@ -164,6 +163,18 @@ class AdminSectionController extends Controller
     			$this->updateValidationOptions = [
     				'provider.*.name' => 'required',
     				'provider.*.email' => 'required'
+    			];
+
+    		case 'staffMember':
+    			$this->insertValidationOptions = [
+    				'staff_first_name' => 'required',
+    				'staff_last_name' => 'required',
+    				'staff_email' => 'required'
+    			];
+    			$this->updateValidationOptions = [
+    				'staff_member.*.first_name' => 'required',
+    				'staff_member.*.last_name' => 'required',
+    				'staff_member.*.email' => 'required'
     			];
 
     		default:

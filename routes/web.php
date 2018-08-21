@@ -13,7 +13,7 @@ Route::post('/issue_type_batch_update', 'IssueTypeController@batchUpdate');
 Route::resource('providers', 'ProviderController');
 Route::post('/provider_batch_update', 'ProviderController@batchUpdate');
 Route::resource('staff_members', 'StaffMemberController');
-Route::post('/staff_member_batch_update', 'StaffMemberTypeController@batchUpdate');
+Route::post('/staff_member_batch_update', 'StaffMemberController@batchUpdate');
 Route::resource('users', 'UserController');
 Route::post('/batch_update', 'UserController@batchUpdate');
 Route::resource('logs', 'SubmissionLogController');

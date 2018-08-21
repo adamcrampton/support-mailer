@@ -99,7 +99,7 @@ class ProviderController extends AdminSectionController
         //
     }
 
-        /**
+    /**
      * Receive an array of data from multi-row field and process a batch update.
      *
      * @param  \Illuminate\Http\Request  $request
