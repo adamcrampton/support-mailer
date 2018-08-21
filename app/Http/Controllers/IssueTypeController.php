@@ -127,8 +127,13 @@ class IssueTypeController extends AdminSectionController
         // Process the updates (if there are any).
         if (! empty($updateArray)) {
             foreach ($updateArray as $issueTypeId => $updatedValues) {
-                IssueType::where('id', $issueTypeId)->update(['issue_name' => $updatedValues['new_value']]);
+                foreach ($updatedValues as $value) {
+                    IssueType::where('id', $issueTypeId)->update([
+                        'issue_name' => $updatedValues['new_value']
+                    ]);
+                }
             }
+
         }
 
         // Process the deletions (if there are any).

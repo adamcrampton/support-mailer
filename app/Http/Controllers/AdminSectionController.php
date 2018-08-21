@@ -45,9 +45,9 @@ class AdminSectionController extends Controller
     	$request->fieldPrefix = $fieldPrefix;
 
         foreach ($request->$fieldPrefix as $item => $fieldValues) {
-            if (array_key_exists('delete', $fieldValues)) {
-                $deleteArray[$fieldValues['original_value']] = $fieldValues['id'];
-            }
+    		if (array_key_exists('delete', $fieldValues)) {
+            	$deleteArray[] = $fieldValues['id'];
+        	}	
         }
 
         return $deleteArray;
@@ -62,7 +62,6 @@ class AdminSectionController extends Controller
 
     	foreach ($request->$fieldPrefix as $item => $fieldValues) {
     		foreach ($fieldsToCheck as $index => $fieldName) {
-
 	   			if ($fieldValues['original_value_' . $fieldName] !== $fieldValues[$fieldName]) {
 	                $updateArray[$fieldValues['id']][$index]['original_value'] = $fieldValues['original_value_' . $fieldName];
 	                $updateArray[$fieldValues['id']][$index]['new_value'] = $fieldValues[$fieldName];
@@ -96,7 +95,7 @@ class AdminSectionController extends Controller
     {
     	// Nested arrays, so count all items (there's probably a neater way to do this).
     	$updateCount = 0;
-    	$deleteCount = 0;
+    	$deleteCount = count($deleteArray) ? count($deleteArray) : 0;
 
     	if (count($updateArray)) {
     		foreach($updateArray as $updates) {
@@ -104,17 +103,11 @@ class AdminSectionController extends Controller
     		}
     	}
 
-    	if (count($deleteArray)) {
-    		foreach($deleteArray as $deletions) {
-    			$deleteCount += count($deletions);
-    		}
-    	}
-    	
     	// Build sucess messages to pass back to the front end.
         $successMessage = '<p>Success! The following updates were made:</p>';
 
         if (! empty($updateArray)) {
-            $successMessage .= '<p>'. $updateCount.' record(s) were updated:</p>';    
+            $successMessage .= '<p>'. $updateCount .' record(s) were updated:</p>';    
             foreach ($updateArray as $issueTypeId => $updates) {
             	$successMessage .= '<ul>';
             	foreach ($updates as $updatedValues) {
@@ -125,7 +118,7 @@ class AdminSectionController extends Controller
         }
 
         if (! empty($deleteArray)) {
-            $successMessage .= '<p>'. $deleteCount.' record(s) were deleted:</p>';
+            $successMessage .= '<p>'. $deleteCount .' record(s) were deleted:</p>';
             $successMessage .= '<ul>';
 
             foreach ($deleteArray as $itemName => $itemId) {
@@ -147,7 +140,7 @@ class AdminSectionController extends Controller
     				'issue_name' => 'required'
     			];
     			$this->updateValidationOptions = [
-    				'issue_type.*.name' => 'required'
+    				'issue_type.*.issue_name' => 'required'
     			];
     			break;
 
