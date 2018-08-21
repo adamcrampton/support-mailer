@@ -4,28 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Provider;
-use App\Traits\AdminTrait;
+use Validator;
 
-class ProviderController extends Controller
+class ProviderController extends AdminSectionController
 {
-    private $configData;
-    private $adminSections;
+    protected $controllerType = 'provider';
+    protected $providerList;
 
-    use AdminTrait;
-
-    public function __construct()
+    public function __construct(Provider $provider)
     {
+        // Initialise parent constructor.
+        parent::__construct();
+
         // Get Provider List.
-        // TODO
-
-        // Require authentication.
-        $this->middleware('auth');
-
-        // Get global config.
-        $this->configData = $this->getGlobalConfig();
-
-        // Get admin section names and routes for front end.
-        $this->adminSections = $this->getAdminSections();
+        $this->providerList = $provider->getProviderList();
     }
 
     /**
@@ -38,7 +30,8 @@ class ProviderController extends Controller
         // Provider home page.
         return view('admin.provider', [
             'config' => $this->configData,
-            'adminSections' => $this->adminSections
+            'adminSections' => $this->adminSections,
+            'providerList' => $this->providerList
         ]);    
     }
 
@@ -58,9 +51,18 @@ class ProviderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Provider $provider)
     {
-        //
+        // Validate then insert if successful.
+        $request->validate($this->insertValidationOptions);
+
+        $provider->provider_name = $request->provider_name;
+        $provider->provider_email = $request->provider_email;
+
+        $provider->save();
+
+        // Return to index with success message.
+        return redirect()->route('providers.index')->with('success', 'Success! New Provider <strong>' . $request->provider_name . '</strong> has been added.');
     }
 
     /**
@@ -95,6 +97,52 @@ class ProviderController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+        /**
+     * Receive an array of data from multi-row field and process a batch update.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function batchUpdate(Request $request)
+    {
+        // Run each row through the validator.
+        Validator::make($request->all(), $this->updateValidationOptions)->validate();
+
+        // Check for any items tagged for deletion. If found, add to array for batch deletion.
+        $deleteArray = $this->buildDeleteArray($request, 'provider');
+
+        // Determine which fields have changed, and prepare array for batch update.
+        $updateArray = $this->buildUpdateArray($request, 'provider', ['provider_name', 'provider_email']);   
+
+        // Just return with warning if no items were updated or deleted.
+        $this->checkForRecordChanges($deleteArray, $updateArray, 'provider.index');
+
+        // Unset any items tagged for deletion so we don't try to update them.
+        // This may occur in a scenario where the field is edited and 'Delete' is also ticked.
+        $updateArray = $this->unsetDeletedItemsFromUpdateArray($deleteArray, $updateArray);
+
+        // Process the updates (if there are any).
+        if (! empty($updateArray)) {
+            foreach ($updateArray as $providerId => $updatedValues) {
+                foreach ($updatedValues as $value) {
+                    Provider::where('id', $providerId)->update([
+                        $value['column_name'] => $value['new_value']
+                    ]);
+                }          
+            }
+        }
+
+        // Process the deletions (if there are any).
+        if (! empty($deleteArray)) {
+            Provider::destroy($deleteArray);
+        }
+
+        // Build sucess messages to pass back to the front end.
+        $successMessage = $this->buildSuccessMessage($deleteArray, $updateArray);
+
+        return redirect()->route('providers.index')->with('success', $successMessage);
     }
 
     /**

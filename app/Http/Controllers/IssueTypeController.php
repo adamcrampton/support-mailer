@@ -9,6 +9,7 @@ use Validator;
 class IssueTypeController extends AdminSectionController
 {
     protected $controllerType = 'issueType';
+    protected $issueList;
 
     public function __construct(IssueType $issueType)
     {
@@ -111,10 +112,10 @@ class IssueTypeController extends AdminSectionController
         Validator::make($request->all(), $this->updateValidationOptions)->validate();
 
         // Check for any items tagged for deletion. If found, add to array for batch deletion.
-        $deleteArray = $this->buildDeleteArray($request);
+        $deleteArray = $this->buildDeleteArray($request, 'issue_type');
 
         // Determine which fields have changed, and prepare array for batch update.
-        $updateArray = $this->buildUpdateArray($request);        
+        $updateArray = $this->buildUpdateArray($request, 'issue_type', ['issue_name']);        
 
         // Just return with warning if no items were updated or deleted.
         $this->checkForRecordChanges($deleteArray, $updateArray, 'issue_types.index');

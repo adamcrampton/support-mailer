@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Provider extends Model
 {
     // Get all providers.
-    public function getProviders()
+    public function getProviderList()
     {
-    	return Provider::all();
+    	return Provider::all()->sortBy('provider_name');
     }
 }

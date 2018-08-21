@@ -37,12 +37,14 @@ class AdminSectionController extends Controller
         $this->setValidationRules($this->controllerType);
     }
 
-    protected function buildDeleteArray($request)
+    protected function buildDeleteArray($request, $fieldPrefix)
     {
     	// Checks the request for items tagged for deletion and return an array if found.
     	$deleteArray = [];
 
-        foreach ($request->issue_type as $item => $fieldValues) {
+    	$request->fieldPrefix = $fieldPrefix;
+
+        foreach ($request->$fieldPrefix as $item => $fieldValues) {
             if (array_key_exists('delete', $fieldValues)) {
                 $deleteArray[$fieldValues['original_value']] = $fieldValues['id'];
             }
@@ -51,16 +53,22 @@ class AdminSectionController extends Controller
         return $deleteArray;
     }
 
-    protected function buildUpdateArray($request)
+    protected function buildUpdateArray($request, $fieldPrefix, array $fieldsToCheck)
     {
     	// Checks the request for any fields that have been updated and return an array if found.
     	$updateArray = [];
 
-    	foreach ($request->issue_type as $item => $fieldValues) {
-            if ($fieldValues['original_value'] !== $fieldValues['name']) {
-                $updateArray[$fieldValues['id']]['original_value'] = $fieldValues['original_value'];
-                $updateArray[$fieldValues['id']]['new_value'] = $fieldValues['name'];
-            }
+    	$request->fieldPrefix = $fieldPrefix;
+
+    	foreach ($request->$fieldPrefix as $item => $fieldValues) {
+    		foreach ($fieldsToCheck as $index => $fieldName) {
+
+	   			if ($fieldValues['original_value_' . $fieldName] !== $fieldValues[$fieldName]) {
+	                $updateArray[$fieldValues['id']][$index]['original_value'] = $fieldValues['original_value_' . $fieldName];
+	                $updateArray[$fieldValues['id']][$index]['new_value'] = $fieldValues[$fieldName];
+	                $updateArray[$fieldValues['id']][$index]['column_name'] = $fieldName;
+	            }
+    		}    
         }
 
         return $updateArray;
@@ -81,28 +89,43 @@ class AdminSectionController extends Controller
             unset($updateArray[$issueTypeId]);
         }
 
-
     	return $updateArray;
     }
 
     protected function buildSuccessMessage($deleteArray, $updateArray)
     {
+    	// Nested arrays, so count all items (there's probably a neater way to do this).
+    	$updateCount = 0;
+    	$deleteCount = 0;
+
+    	if (count($updateArray)) {
+    		foreach($updateArray as $updates) {
+    			$updateCount += count($updates);
+    		}
+    	}
+
+    	if (count($deleteArray)) {
+    		foreach($deleteArray as $deletions) {
+    			$deleteCount += count($deletions);
+    		}
+    	}
+    	
     	// Build sucess messages to pass back to the front end.
         $successMessage = '<p>Success! The following updates were made:</p>';
 
         if (! empty($updateArray)) {
-            $successMessage .= '<p>'. count($updateArray).' record(s) were updated:</p>';
-            
-            $successMessage .= '<ul>';
-
-            foreach ($updateArray as $issueTypeId => $updatedValues) {
-                $successMessage .= '<li>'. $updatedValues['original_value'] .' updated to '. $updatedValues['new_value'] .'</li>';
-            }
-            $successMessage .= '</ul>';
+            $successMessage .= '<p>'. $updateCount.' record(s) were updated:</p>';    
+            foreach ($updateArray as $issueTypeId => $updates) {
+            	$successMessage .= '<ul>';
+            	foreach ($updates as $updatedValues) {
+            		$successMessage .= '<li>'. $updatedValues['original_value'] .' updated to '. $updatedValues['new_value'] .'</li>';
+            	}
+            	$successMessage .= '</ul>';
+            }  
         }
 
         if (! empty($deleteArray)) {
-            $successMessage .= '<p>'. count($deleteArray).' record(s) were deleted:</p>';
+            $successMessage .= '<p>'. $deleteCount.' record(s) were deleted:</p>';
             $successMessage .= '<ul>';
 
             foreach ($deleteArray as $itemName => $itemId) {
@@ -127,6 +150,7 @@ class AdminSectionController extends Controller
     				'issue_type.*.name' => 'required'
     			];
     			break;
+
     		case 'config':
     			$this->insertValidationOptions = [];
 
@@ -139,6 +163,16 @@ class AdminSectionController extends Controller
     				'use_staff_list' => 'required'
     			];
     		
+    		case 'provider':
+    			$this->insertValidationOptions = [
+    				'provider_name' => 'required',
+    				'provider_email' => 'required'
+    			];
+    			$this->updateValidationOptions = [
+    				'provider.*.name' => 'required',
+    				'provider.*.email' => 'required'
+    			];
+
     		default:
     			$this->insertValidationOptions = [];
     			$this->updateValidationOptions = [];
