@@ -1,25 +1,47 @@
 // Helper functions for the admin front end.
 $(document).ready(function() {
-	// Listen for changes to 'first_name' and 'last_name' type fields.
-	// Populate the hidden 'name' fields with updated values on change.
-	var $staff_name = $('#staff_name');
-	var $staff_first_name = $('#staff_first_name');
-	var $staff_last_name = $('#staff_last_name');
 
-	$staff_first_name.on('change paste keyup', function() {
-		$staff_name.val($(this).val() + ' ' + $staff_last_name.val());
-	});
+	// Update the hidden "something_name" by listening and combining values from first_name and last_name fields.
+	var hiddenFieldUpdater = {
+		
+		prefixes : ['staff', 'user'],
 
-	$staff_last_name.on('change paste keyup', function() {
-		$staff_name.val($staff_first_name.val() + ' ' + $(this).val());
-	});
+		init: function() {
+			this.setUpEventListeners();
+		},
 
-	$('input[data-update-row]').on('change paste keyup', function() {
-		var row_to_find = $(this).attr('data-update-row');
-		if ($(this).attr('data-input-type') === 'staff_first_name') {
-			$('input[data-update-row=' + row_to_find + '][data-input-type=staff_name]').val($(this).val() + ' ' + $('input[data-update-row=' + row_to_find + '][data-input-type=staff_last_name]').val());
-		} else {
-			$('input[data-update-row=' + row_to_find + '][data-input-type=staff_name]').val($('input[data-update-row=' + row_to_find + '][data-input-type=staff_first_name]').val() + ' ' + $(this).val());
+		setUpEventListeners: function() {
+			for (index in this.prefixes) {
+
+				// Set up variables.
+				var $name = $('#add_form #' + this.prefixes[index] + '_name');
+				var $first_name = $('#add_form #' + this.prefixes[index] + '_first_name');
+				var $last_name = $('#add_form #' + this.prefixes[index] + '_last_name');
+
+				// For insert fields.
+				$first_name.on('change paste keyup', { name:$name, first_name:$first_name, last_name:$last_name }, function(e) {
+					e.data.name.val($(this).val() + ' ' + e.data.last_name.val());
+				});
+
+				$last_name.on('change paste keyup', { name:$name, first_name:$first_name, last_name:$last_name }, function(e) {
+					e.data.name.val(e.data.first_name.val() + ' ' + $(this).val());
+				});
+
+				// For update matrix.
+				$('#update_form input.form-control').on('change paste keyup', function() {
+					var $container = $(this).closest('tr');
+					var $name_field = $container.find('.name');
+					var first_name_value = $container.find('.first_name').val();
+					var last_name_value = $container.find('.last_name').val();
+
+					$name_field.val(first_name_value + ' ' + last_name_value);
+				});
+			}	
 		}
-	});
+	}
+
+	hiddenFieldUpdater.init();
 });
+
+	
+

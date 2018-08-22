@@ -177,6 +177,19 @@ class AdminSectionController extends Controller
     				'staff_member.*.email' => 'required'
     			];
 
+            case 'user':
+                $this->insertValidationOptions = [
+                    'user_first_name' => 'required',
+                    'user_last_name' => 'required',
+                    'user_email' => 'required',
+                    'user_password' => 'required'
+                ];
+                $this->updateValidationOptions = [
+                    'user.*.first_name' => 'required',
+                    'user.*.last_name' => 'required',
+                    'user.*.email' => 'required'
+                ];
+
     		default:
     			$this->insertValidationOptions = [];
     			$this->updateValidationOptions = [];

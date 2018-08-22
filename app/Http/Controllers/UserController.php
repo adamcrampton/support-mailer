@@ -18,11 +18,11 @@ class UserController extends AdminSectionController
         // Initialise parent constructor.
         parent::__construct();
 
-        // Get Staff List.
+        // Get User List.
         $this->userList = $user->getUsers();
 
         // Get Permission List.
-        $this->permissionsList = Permission::all();
+        $this->permissionList = Permission::all();
     }
 
     /**
@@ -62,10 +62,11 @@ class UserController extends AdminSectionController
         // Validate then insert if successful.
         $request->validate($this->insertValidationOptions);
 
-        $user->user_display_name = $request->display_name;
+        $user->user_name = $request->user_name;
         $user->user_first_name = $request->user_first_name;
         $user->user_last_name = $request->user_last_name;
         $user->user_email = $request->user_email;
+        $user->password = $request->user_password;
         $user->permission_fk = $request->permission_list;
 
         $user->save();
@@ -106,6 +107,52 @@ class UserController extends AdminSectionController
     public function update(Request $request, $id)
     {
         //
+    }
+
+    /**
+     * Receive an array of data from multi-row field and process a batch update.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function batchUpdate(Request $request)
+    {
+        // Run each row through the validator.
+        Validator::make($request->all(), $this->updateValidationOptions)->validate();
+
+        // Check for any items tagged for deletion. If found, add to array for batch deletion.
+        $deleteArray = $this->buildDeleteArray($request, 'user');
+
+        // Determine which fields have changed, and prepare array for batch update.
+        $updateArray = $this->buildUpdateArray($request, 'user', ['user_name', 'user_first_name', 'user_last_name', 'user_email']);   
+
+        // Just return with warning if no items were updated or deleted.
+        $this->checkForRecordChanges($deleteArray, $updateArray, 'users.index');
+
+        // Unset any items tagged for deletion so we don't try to update them.
+        // This may occur in a scenario where the field is edited and 'Delete' is also ticked.
+        $updateArray = $this->unsetDeletedItemsFromUpdateArray($deleteArray, $updateArray);
+
+        // Process the updates (if there are any).
+        if (! empty($updateArray)) {
+            foreach ($updateArray as $userId => $updatedValues) {
+                foreach ($updatedValues as $value) {
+                    User::where('id', $userId)->update([
+                        $value['column_name'] => $value['new_value']
+                    ]);
+                }          
+            }
+        }
+
+        // Process the deletions (if there are any).
+        if (! empty($deleteArray)) {
+            User::destroy($deleteArray);
+        }
+
+        // Build sucess messages to pass back to the front end.
+        $successMessage = $this->buildSuccessMessage($deleteArray, $updateArray);
+
+        return redirect()->route('users.index')->with('success', $successMessage);
     }
 
     /**

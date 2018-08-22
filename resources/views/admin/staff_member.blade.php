@@ -9,7 +9,7 @@
 				<h1 class="mt-5">Staff Members</h1>
 				<h2 class="mt-5">Add New Staff Member</h2>
 				<div class="card-body">
-					{!! Form::open(['action' => ['StaffMemberController@store'], 'class' => 'form', 'id' => 'staff_add']) !!}
+					{!! Form::open(['action' => ['StaffMemberController@store'], 'class' => 'form', 'id' => 'add_form']) !!}
 					<div class="form-group row required">
 				      <label class="col-lg-3 col-form-label form-control-label">Staff Member First Name</label>
 				      <div class="col-lg-9">
@@ -27,7 +27,7 @@
 					<div class="form-group row required">
 				      <label class="col-lg-3 col-form-label form-control-label">Staff Member Email</label>
 				      <div class="col-lg-9">
-				          {{ Form::text('staff_email', null, ['class' => 'form-control', 'id' => 'email', 'required']) }}
+				          {{ Form::text('staff_email', null, ['class' => 'form-control', 'id' => 'staff_email', 'required']) }}
 					  </div>
 					</div>
 					<div class="form-group row text-right">
@@ -44,7 +44,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h2 class="mt-5">Manage Staff Members</h2>
-				{!! Form::open(['action' => ['StaffMemberController@batchUpdate'], 'class' => 'form', 'id' => 'staff_update']) !!}
+				{!! Form::open(['action' => ['StaffMemberController@batchUpdate'], 'class' => 'form', 'id' => 'update_form']) !!}
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -55,26 +55,26 @@
 						</tr>
 					</thead>
 					@foreach($staffList as $index => $staff)
-						<tr>
+						<tr data-update-row="{{ $index }}">
 							<td>
 								{{-- Store id and original value for each row - to be processed as an array in the backend. --}}
 								{{ Form::text('staff['. $index .'][id]', $staff->id, ['style' => 'display:none']) }}
 								{{ Form::text('staff['. $index .'][original_value_staff_first_name]', $staff->staff_first_name, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][staff_first_name]', $staff->staff_first_name, ['class' => 'form-control', 'data-input-type' => 'staff_first_name', 'data-update-row' => $index, 'required']) }}
+								{{ Form::text('staff['. $index .'][staff_first_name]', $staff->staff_first_name, ['class' => 'form-control first_name', 'data-input-type' => 'staff_first_name', 'required']) }}
 							</td>
 							<td>
 								{{-- Store id and original value for each row - to be processed as an array in the backend. --}}
 								{{ Form::text('staff['. $index .'][original_value_staff_last_name]', $staff->staff_last_name, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][staff_last_name]', $staff->staff_last_name, ['class' => 'form-control', 'data-input-type' => 'staff_last_name', 'data-update-row' => $index, 'required']) }}
+								{{ Form::text('staff['. $index .'][staff_last_name]', $staff->staff_last_name, ['class' => 'form-control last_name', 'data-input-type' => 'staff_last_name', 'required']) }}
 
 								{{-- Hidden fields for concatenating first + last names - updates automatically via JS --}}
 								{{ Form::text('staff['. $index .'][original_value_staff_name]', $staff->staff_name, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][staff_name]', $staff->staff_name, [ 'data-update-row' => $index, 'data-input-type' => 'staff_name', 'style' => 'display:none']) }}
+								{{ Form::text('staff['. $index .'][staff_name]', $staff->staff_name, [ 'data-input-type' => 'staff_name', 'class' => 'name', 'style' => 'display:none']) }}
 							</td>
 							<td>
 								{{-- Store id and original value for each row - to be processed as an array in the backend. --}}
 								{{ Form::text('staff['. $index .'][original_value_staff_email]', $staff->staff_email, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][staff_email]', $staff->staff_email, ['class' => 'form-control', 'id' => 'email', 'required']) }}
+								{{ Form::text('staff['. $index .'][staff_email]', $staff->staff_email, ['class' => 'form-control', 'id' => 'staff_email', 'required']) }}
 							</td>
 							<td class="text-center">
 								<div class="form-check">
