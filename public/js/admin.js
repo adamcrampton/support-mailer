@@ -94,10 +94,10 @@ $(document).ready(function () {
 
 	$('input[data-update-row]').on('change paste keyup', function () {
 		var row_to_find = $(this).attr('data-update-row');
-		if ($(this).attr('data-input-type') === 'first_name') {
-			$('input[data-update-row="' + row_to_find + '"][data-input-type="name"]').val($(this).val() + ' ' + $('input[data-update-row="' + row_to_find + '"][data-input-type="last_name"]').val());
+		if ($(this).attr('data-input-type') === 'staff_first_name') {
+			$('input[data-update-row=' + row_to_find + '][data-input-type=staff_name]').val($(this).val() + ' ' + $('input[data-update-row=' + row_to_find + '][data-input-type=staff_last_name]').val());
 		} else {
-			$('input[data-update-row="' + row_to_find + '"][data-input-type="name"]').val($('input[data-update-row="' + row_to_find + '"][data-input-type="first_name"]').val() + ' ' + $(this).val());
+			$('input[data-update-row=' + row_to_find + '][data-input-type=staff_name]').val($('input[data-update-row=' + row_to_find + '][data-input-type=staff_first_name]').val() + ' ' + $(this).val());
 		}
 	});
 });

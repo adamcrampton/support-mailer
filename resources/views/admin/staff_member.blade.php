@@ -59,22 +59,22 @@
 							<td>
 								{{-- Store id and original value for each row - to be processed as an array in the backend. --}}
 								{{ Form::text('staff['. $index .'][id]', $staff->id, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][original_value_first_name]', $staff->staff_first_name, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][first_name]', $staff->staff_first_name, ['class' => 'form-control', 'data-input-type' => 'first_name', 'data-update-row' => $index, 'required']) }}
+								{{ Form::text('staff['. $index .'][original_value_staff_first_name]', $staff->staff_first_name, ['style' => 'display:none']) }}
+								{{ Form::text('staff['. $index .'][staff_first_name]', $staff->staff_first_name, ['class' => 'form-control', 'data-input-type' => 'staff_first_name', 'data-update-row' => $index, 'required']) }}
 							</td>
 							<td>
 								{{-- Store id and original value for each row - to be processed as an array in the backend. --}}
-								{{ Form::text('staff['. $index .'][id]', $staff->id, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][original_value_last_name]', $staff->staff_last_name, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][last_name]', $staff->staff_last_name, ['class' => 'form-control', 'data-input-type' => 'last_name', 'data-update-row' => $index, 'required']) }}
+								{{ Form::text('staff['. $index .'][original_value_staff_last_name]', $staff->staff_last_name, ['style' => 'display:none']) }}
+								{{ Form::text('staff['. $index .'][staff_last_name]', $staff->staff_last_name, ['class' => 'form-control', 'data-input-type' => 'staff_last_name', 'data-update-row' => $index, 'required']) }}
 
-								{{-- Hidden field for concatenating first + last names - updates automatically via JS --}}
-								{{ Form::text('staff['. $index .'][id]', $staff->staff_name, [ 'data-update-row' => $index, 'data-input-type' => 'name', 'style' => 'display:none']) }}
+								{{-- Hidden fields for concatenating first + last names - updates automatically via JS --}}
+								{{ Form::text('staff['. $index .'][original_value_staff_name]', $staff->staff_name, ['style' => 'display:none']) }}
+								{{ Form::text('staff['. $index .'][staff_name]', $staff->staff_name, [ 'data-update-row' => $index, 'data-input-type' => 'staff_name', 'style' => 'display:none']) }}
 							</td>
 							<td>
 								{{-- Store id and original value for each row - to be processed as an array in the backend. --}}
-								{{ Form::text('staff['. $index .'][original_value_email]', $staff->staff_email, ['style' => 'display:none']) }}
-								{{ Form::text('staff['. $index .'][email]', $staff->staff_email, ['class' => 'form-control', 'id' => 'email', 'required']) }}
+								{{ Form::text('staff['. $index .'][original_value_staff_email]', $staff->staff_email, ['style' => 'display:none']) }}
+								{{ Form::text('staff['. $index .'][staff_email]', $staff->staff_email, ['class' => 'form-control', 'id' => 'email', 'required']) }}
 							</td>
 							<td class="text-center">
 								<div class="form-check">

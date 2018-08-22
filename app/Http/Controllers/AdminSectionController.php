@@ -44,8 +44,6 @@ class AdminSectionController extends Controller
 
     	$request->fieldPrefix = $fieldPrefix;
 
-    	dd($request->$fieldPrefix);
-
         foreach ($request->$fieldPrefix as $item => $fieldValues) {
     		if (array_key_exists('delete', $fieldValues)) {
             	$deleteArray[$fieldValues[$fieldPrefix . '_name']] = $fieldValues['id'];
