@@ -30,7 +30,7 @@ class User extends Authenticatable
     // Get all user details.
     public function getUsers()
     {
-        return User::all()->sortBy('first_name');
+        return User::all()->sortBy('display_name');
     }
 
     // Users have a single permission level.

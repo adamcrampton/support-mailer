@@ -9,6 +9,6 @@ class StaffMember extends Model
     // Get all staff member details.
     public function getStaffMembers()
     {
-    	return StaffMember::all()->sortBy('first_name');
+    	return StaffMember::all()->sortBy('staff_name');
     }
 }
