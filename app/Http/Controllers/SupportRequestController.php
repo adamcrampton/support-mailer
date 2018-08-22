@@ -27,7 +27,7 @@ class SupportRequestController extends Controller
         $this->configData = $config->getConfig();
 
         // Get a list of providers if the option is set.
-        $this->providerList = $this->configData->show_multiple_providers ? $provider->getProviders() : $this->configData->default_provider_fk;
+        $this->providerList = $this->configData->show_multiple_providers ? $provider->getProviderList() : $this->configData->default_provider_fk;
 
         // Get a list of issue types.
         $this->issueList = $issueType->getIssueTypes();
