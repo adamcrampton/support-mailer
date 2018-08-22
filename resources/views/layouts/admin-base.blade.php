@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ URL::asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     
     <!-- App CSS -->
-    <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/admin.css') }}">
 
     <title>{{ $config->form_heading }}</title>
   </head>
@@ -45,7 +45,7 @@
 
     <!-- Navigation -->
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark static-top">
       <div class="container">
         <a class="navbar-brand" href="/">{{ $config->form_heading }}</a>
         {{-- Only show nav items if logged in. --}}
@@ -74,7 +74,7 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container container__main-container">
       @yield('content')
     </div>
   

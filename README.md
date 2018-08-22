@@ -44,5 +44,5 @@ As follows:
 * Integrate user permissions into Auth and wrap certain items in these checks (e.g. Manage Users for Admins)
 * Build log viewer
 * Add file uploading functionality
-* Make issue list multi-selectable
+* Optimise loops + database queries - there's some not-very-good stuff in there
 * LDAP to pull AD users in via cron job
