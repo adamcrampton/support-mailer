@@ -1,23 +1,17 @@
 # support-mailer
-## TODO List
-* Add file uploading functionality
-* Make issue list multi-selectable
-* Build admin front end index with Auth
-* Build admin front end pages to manage Global Config, Issue Types, Providers, Staff Members, and Users
-* Build log viewer
-* LDAP to pull AD users in via cron job
 
 ## Introduction
-Simple app for building support request emails
-
-The aim of this app is to provide a front end for staff to submit a support request, using fields to easily capture the data.
+The aim of this app is to provide a simple front end for staff to submit a support request, using fields to easily capture the data.
 
 Configurable items include:
+* Form heading
+* Form title
 * Intro text on form page
 * Storing support provider name and email addresses (with a default setting)
 * Option to show one or multiple providers
 * Staff list, and the option to show a select or blank input for this (in case you don't want to maintain a staff list)
 * Issue type list
+* User management
 
 On submitting, an email will be sent to the support provider with:
 * Intro text
@@ -25,10 +19,10 @@ On submitting, an email will be sent to the support provider with:
 * Issue type
 * Details
 
-The email will be sent from the staff member's email address, so this is ideal for support providers that send an automated response when they receive a request, confirming a ticket has been created.
+The email will be sent from the staff member's email address, so this is ideal for support providers that send an automated response when they receive a request (e.g. Zendesk), confirming a ticket has been created.
 
 ## Installation
-Two quick notes for Windows + Vagrant (e.g. Homestead) devs:
+A few quick notes for Windows + Vagrant (e.g. Homestead) devs:
 * You will probably have to SSH into the Vagrant box to run the composer and artisan commands. I'm sure there's a way around this, but if you're struggling to run these commands from a bash console, this is the easiest thing to do.
 * Unless you already have npm running properly in your environment, save yourself the hassle and install node.js for Windows now (unless you feel like wrasslin' with Vagrant for hours).
 * Don't forget to update your hosts file, as well as Homestead.yaml if you're using it.
@@ -45,3 +39,11 @@ As follows:
 1. Migrate and seed your database - php artisan:migrate --seed (or leave the seed switch off if you prefer not to)
 1. Run npm install from the project root
 1. Run npm run dev - this will copy Bootstrap 4 and jQuery into your public directory (via Webpack)
+
+## TODO List
+* Add remaining back end validation rules (mostly just have 'required' set)
+* Add file uploading functionality
+* Make issue list multi-selectable
+* Integrate user permissions into Auth and wrap certain items in these checks (e.g. Manage Users for Admins)
+* Build log viewer
+* LDAP to pull AD users in via cron job
