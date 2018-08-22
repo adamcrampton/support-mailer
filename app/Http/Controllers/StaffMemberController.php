@@ -56,16 +56,16 @@ class StaffMemberController extends AdminSectionController
         // Validate then insert if successful.
         $request->validate($this->insertValidationOptions);
 
-        $staffMember->staff_name = $request->first_name . ' ' . $request->last_name;
-        $staffMember->staff_first_name = $request->first_name;
-        $staffMember->staff_last_name = $request->last_name;
+        $staffMember->staff_name = $request->staff_name;
+        $staffMember->staff_first_name = $request->staff_first_name;
+        $staffMember->staff_last_name = $request->staff_last_name;
         $staffMember->staff_email = $request->staff_email;
 
 
         $staffMember->save();
 
         // Return to index with success message.
-        return redirect()->route('staff_members.index')->with('success', 'Success! New Staff Member <strong>' . $request->staff_first_name . '</strong> has been added.');
+        return redirect()->route('staff_members.index')->with('success', 'Success! New Staff Member <strong>' . $request->staff_name . '</strong> has been added.');
     }
 
     /**
@@ -110,8 +110,6 @@ class StaffMemberController extends AdminSectionController
      */
     public function batchUpdate(Request $request)
     {
-        #!# Going to have to come up with some way to generate a staff_name field into the $request object for each row in the front end. Don't do it here
-
         // Run each row through the validator.
         Validator::make($request->all(), $this->updateValidationOptions)->validate();
 

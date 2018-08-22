@@ -84,6 +84,6 @@
     <script src="{{ URL::asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 
     <!-- App Scripts -->
-    <script src="{{ URL::asset('js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/admin.js') }}"></script>
   </body>
 </html>
