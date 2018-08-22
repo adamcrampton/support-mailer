@@ -16,7 +16,7 @@ class ConfigController extends AdminSectionController
         // Initialise parent constructor.
         parent::__construct();
 
-        // Get a list of providersList.
+        // Get a list of providers.
         $this->providerList = Provider::all();
     }
 

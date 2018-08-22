@@ -36,6 +36,12 @@ class LoginController extends Controller
         $this->adminSections = $this->getAdminSections();
     }
 
+    // Set custom username.
+    public function username()
+    {
+        return 'user_email';
+    }
+
     // Override default functions so we can can configure routing and pass data around.
     public function showLoginForm()
     {

@@ -4,28 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Traits\AdminTrait;
+use App\Models\Permission;
+use Validator;
 
-class UserController extends Controller
+class UserController extends AdminSectionController
 {
-    private $configData;
-    private $adminSections;
+    protected $controllerType = 'user';
+    protected $userList;
+    protected $permissionList;
 
-    use AdminTrait;
-
-    public function __construct()
+    public function __construct(User $user)
     {
-        // Get User List.
-        // TODO
+        // Initialise parent constructor.
+        parent::__construct();
 
-        // Require authentication.
-        $this->middleware('auth');
+        // Get Staff List.
+        $this->userList = $user->getUsers();
 
-        // Get global config.
-        $this->configData = $this->getGlobalConfig();
-
-        // Get admin section names and routes for front end.
-        $this->adminSections = $this->getAdminSections();
+        // Get Permission List.
+        $this->permissionsList = Permission::all();
     }
 
     /**
@@ -38,7 +35,9 @@ class UserController extends Controller
         // User Management home page.
         return view('admin.user', [
             'config' => $this->configData,
-            'adminSections' => $this->adminSections
+            'adminSections' => $this->adminSections,
+            'userList' => $this->userList,
+            'permissionList' => $this->permissionList
         ]);  
     }
 
@@ -58,9 +57,21 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
-        //
+        // Validate then insert if successful.
+        $request->validate($this->insertValidationOptions);
+
+        $user->user_display_name = $request->display_name;
+        $user->user_first_name = $request->user_first_name;
+        $user->user_last_name = $request->user_last_name;
+        $user->user_email = $request->user_email;
+        $user->permission_fk = $request->permission_list;
+
+        $user->save();
+
+        // Return to index with success message.
+        return redirect()->route('users.index')->with('success', 'Success! New User <strong>' . $request->user_display_name . '</strong> has been added.');
     }
 
     /**

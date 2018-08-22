@@ -20,10 +20,10 @@ class UsersTableSeeder extends Seeder
         SEEDER_USER_PASSWORD = yourpassword
         */
 		DB::table('users')->insert([
-            'first_name' => env('SEEDER_USER_FIRST_NAME'),
-            'last_name' => env('SEEDER_USER_LAST_NAME'),
-            'display_name' => env('SEEDER_USER_DISPLAY_NAME'),
-			'email' => env('SEEDER_USER_EMAIL'),
+            'user_first_name' => env('SEEDER_USER_FIRST_NAME'),
+            'user_last_name' => env('SEEDER_USER_LAST_NAME'),
+            'user_display_name' => env('SEEDER_USER_DISPLAY_NAME'),
+			'user_email' => env('SEEDER_USER_EMAIL'),
         	'password' => Hash::make((env('SEEDER_USER_PASSWORD'))),
             'permission_fk' => 1
         ]);
