@@ -41,9 +41,8 @@ As follows:
 1. Run npm run dev - this will copy Bootstrap 4 and jQuery into your public directory (via Webpack)
 
 ## TODO List
-* Add remaining back end validation rules (mostly just have 'required' set)
-* Add file uploading functionality
-* Make issue list multi-selectable
 * Integrate user permissions into Auth and wrap certain items in these checks (e.g. Manage Users for Admins)
 * Build log viewer
+* Add file uploading functionality
+* Make issue list multi-selectable
 * LDAP to pull AD users in via cron job

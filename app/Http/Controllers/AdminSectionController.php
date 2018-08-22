@@ -138,9 +138,9 @@ class AdminSectionController extends Controller
     		case 'config':
     			$this->insertValidationOptions = [];
     			$this->updateValidationOptions = [
-    				'form_heading' => 'required', 
-    				'form_title' => 'required', 
-    				'intro_html' => 'required', 
+    				'form_heading' => 'required|max:255', 
+    				'form_title' => 'required|max:255', 
+    				'intro_html' => 'required|max:255', 
     				'provider_list' => 'required', 
     				'show_multiple_providers' => 'required', 
     				'use_staff_list' => 'required'
@@ -148,46 +148,46 @@ class AdminSectionController extends Controller
 
     		case 'issueType':
     			$this->insertValidationOptions = [
-    				'issue_name' => 'required'
+    				'issue_name' => 'required|max:255|unique:issue_types,issue_name'
     			];
     			$this->updateValidationOptions = [
-    				'issue_type.*.issue_name' => 'required'
+    				'issue_type.*.issue_name' => 'required|max:255|unique:issue_types,issue_name'
     			];
     			break;
 
     		case 'provider':
     			$this->insertValidationOptions = [
-    				'provider_name' => 'required',
-    				'provider_email' => 'required'
+    				'provider_name' => 'required|max:255|unique:providers,provider_name',
+    				'provider_email' => 'required|email|max:255|unique:providers,provider_email'
     			];
     			$this->updateValidationOptions = [
-    				'provider.*.name' => 'required',
-    				'provider.*.email' => 'required'
+    				'provider.*.name' => 'required|max:255|unique:providers,provider_name',
+    				'provider.*.email' => 'required|email|max:255|unique:providers,provider_email'
     			];
 
     		case 'staffMember':
     			$this->insertValidationOptions = [
-    				'staff_first_name' => 'required',
-    				'staff_last_name' => 'required',
-    				'staff_email' => 'required'
+    				'staff_first_name' => 'required|max:255|unique:staff_members,staff_first_name',
+    				'staff_last_name' => 'required|max:255|unique:staff_members,staff_last_name',
+    				'staff_email' => 'required|email|max:255|unique:staff_members,staff_email'
     			];
     			$this->updateValidationOptions = [
-    				'staff_member.*.first_name' => 'required',
-    				'staff_member.*.last_name' => 'required',
-    				'staff_member.*.email' => 'required'
+    				'staff_member.*.first_name' => 'required|max:255|unique:staff_members,staff_first_name',
+    				'staff_member.*.last_name' => 'required|max:255|unique:staff_members,staff_last_name',
+    				'staff_member.*.email' => 'required|email|max:255|unique:staff_members,staff_email'
     			];
 
             case 'user':
                 $this->insertValidationOptions = [
-                    'user_first_name' => 'required',
-                    'user_last_name' => 'required',
-                    'user_email' => 'required',
-                    'user_password' => 'required'
+                    'user_first_name' => 'required|max:255|unique:users,user_first_name',
+                    'user_last_name' => 'required|max:255|unique:users,user_last_name',
+                    'user_email' => 'required|email|max:255|unique:users,user_email',
+                    'user_password' => 'required|min:6'
                 ];
                 $this->updateValidationOptions = [
-                    'user.*.first_name' => 'required',
-                    'user.*.last_name' => 'required',
-                    'user.*.email' => 'required'
+                    'user.*.first_name' => 'required|max:255|unique:users,user_first_name',
+                    'user.*.last_name' => 'required|max:255|unique:users,user_last_name',
+                    'user.*.email' => 'required|email|max:255|unique:users,user_email'
                 ];
 
     		default:
