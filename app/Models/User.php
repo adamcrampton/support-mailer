@@ -27,6 +27,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    // Get all user details.
+    public function getUsers()
+    {
+        return User::all()->sortBy('first_name');
+    }
+
     // Users have a single permission level.
     public function permission()
     {
