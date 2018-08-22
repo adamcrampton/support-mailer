@@ -55,14 +55,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/admin">Home
+            <li class="nav-item">
+              <a class="nav-link {{ Request::is('admin') ? 'active' : '' }}" href="/admin">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             @foreach($adminSections as $name => $route)
             <li class="nav-item">
-              <a class="nav-link" href="/{{ $route }}">{{ $name }}</a>
+              <a class="nav-link {{ Request::is($route) ? 'active' : '' }}" href="/{{ $route }}">{{ $name }}</a>
             </li>
             @endforeach
             <li class="nav-item">
