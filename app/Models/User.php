@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'permission_fk'
     ];
 
     /**
@@ -26,4 +26,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    // Users have a single permission level.
+    public function permission()
+    {
+        return $this->hasOne('App\Models\Permission', 'id', 'permission_fk');
+    }
 }
