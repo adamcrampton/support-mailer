@@ -44,7 +44,6 @@
     @endif
 
     <!-- Navigation -->
-
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark static-top">
       <div class="container">
         <a class="navbar-brand" href="/">{{ $config->form_heading }}</a>
@@ -65,6 +64,12 @@
               <a class="nav-link {{ Request::is($route) ? 'active' : '' }}" href="/{{ $route }}">{{ $name }}</a>
             </li>
             @endforeach
+            {{-- This route is guarded, but don't even both showing the option for non-admins. --}}
+            @if(Auth::user()->permission->permission_name === 'admin')
+            <li class="nav-item">
+              <a class="nav-link" href="/users">Manage Users</a>
+            </li>
+            @endif
             <li class="nav-item">
               <a class="nav-link" href="/logout">Log out</a>
             </li>

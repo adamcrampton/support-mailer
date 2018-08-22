@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Traits\AdminTrait;
 use Validator;
 
 class AdminSectionController extends Controller
 {
     // The purpose of this controller is to set up all of the repeated properties and methods that /admin pages should inherit.
-
-	// TODO: Check for existing relationships when processing deletions - probably better to tag them as deleted than actually delete (because of the log table).
-    // TODO: Add duplicate checking in validation rules.
-
-	protected $configData;
+    protected $authorisedToView;
+    protected $configData;
     protected $adminSections;
     protected $issueList;
     protected $insertValidateOptions;
@@ -26,6 +24,14 @@ class AdminSectionController extends Controller
     {
     	// Require authentication.
         $this->middleware('auth');
+
+        // Check authorised to view admin edit pages.
+        $this->authorisedToView = in_array(Auth::user()->permission->permission_name, ['admin, editor']);  
+
+        // Bounce immediately if not authorised to view.
+        if (! $this->authorisedToView) {
+            return redirect()->route('auth.login')->with('warning', 'Sorry, you are not authorised to view these pages.');
+        }
 
         // Get global config.
         $this->configData = $this->getGlobalConfig();

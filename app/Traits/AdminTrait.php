@@ -15,7 +15,6 @@ trait AdminTrait
             'Issue Types' => 'issue_types',
             'Providers' => 'providers',
             'Staff Members' => 'staff_members',
-            'Manage Users' => 'users'
         ];
 	}
 

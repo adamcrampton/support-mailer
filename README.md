@@ -42,6 +42,7 @@ As follows:
 
 ## TODO List
 * Integrate user permissions into Auth and wrap certain items in these checks (e.g. Manage Users for Admins)
+* Check for existing relationships when processing deletions - probably better to tag them as deleted than actually delete (because of the log table)
 * Build log viewer
 * Add file uploading functionality
 * Optimise loops + database queries - there's some not-very-good stuff in there

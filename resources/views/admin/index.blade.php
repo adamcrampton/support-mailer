@@ -20,6 +20,12 @@
               <a href="/{{ $route }}">{{ $name }}</a>
             </li>
             @endforeach
+            {{-- This route is guarded, but don't even both showing the option for non-admins. --}}
+            @if(Auth::user()->permission->permission_name === 'admin')
+            <li>
+              <a href="/users">Manage Users</a>
+            </li>
+            @endif
           </ul>
          </div>
         </div>
