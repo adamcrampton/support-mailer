@@ -20,7 +20,8 @@ class UsersTableSeeder extends Seeder
 		DB::table('users')->insert([
             'name' => env('SEEDER_USER_NAME'),
 			'email' => env('SEEDER_USER_EMAIL'),
-        	'password' => Hash::make((env('SEEDER_USER_PASSWORD')))
+        	'password' => Hash::make((env('SEEDER_USER_PASSWORD'))),
+            'permission_fk' => 1
         ]);
     }
 }

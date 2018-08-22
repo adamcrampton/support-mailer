@@ -17,6 +17,7 @@ Route::post('/staff_member_batch_update', 'StaffMemberController@batchUpdate');
 Route::resource('users', 'UserController');
 Route::post('/batch_update', 'UserController@batchUpdate');
 Route::resource('logs', 'SubmissionLogController');
+Route::resource('permissions', 'PermissionController');
 
 // Auth Routes.
 Auth::routes();
