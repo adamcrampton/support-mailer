@@ -14,7 +14,7 @@ Configurable items include:
 * Storing support provider name and email addresses (with a default setting)
 * Option to show one or multiple providers
 * Staff list
-* Option to show a select or blank inputs for this (in case you don't want to maintain a staff list)
+* Option to display staff list dropdown or regular input fields (in case you don't want to maintain a staff list)
 * Issue type list
 * User management with access control
 
