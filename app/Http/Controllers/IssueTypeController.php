@@ -20,7 +20,7 @@ class IssueTypeController extends AdminSectionController
         parent::__construct();
 
         // Get Issue List.
-        $this->issueList = $issueType->getIssueTypes();
+        $this->issueList = $issueType->getIssueTypes()->sortBy('issue_name');
     }
 
     /**
@@ -153,8 +153,12 @@ class IssueTypeController extends AdminSectionController
         }
 
         // Process the deletions (if there are any).
+        // Note we tag them with a 0 status to prevent orphaned records.
         if (! empty($deleteArray)) {
-            IssueType::destroy($deleteArray);
+            // Set each item status.
+            IssueType::whereIn('id', $deleteArray)->update([
+                'issue_status' => 0
+            ]);
         }
 
         // Build sucess messages to pass back to the front end.
