@@ -29,7 +29,12 @@ class SubmissionLogController extends AdminSectionController
      */
     public function index()
     {
-        //
+        // Return log data.
+        return view('admin.submission_log', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections,
+            'logData' => $this->logData
+        ]);
     }
 
     /**

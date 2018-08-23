@@ -22,4 +22,9 @@ class SubmissionLog extends Model
     	'email_sent',
     	'errors'
     ];
+
+    public function getLogData()
+    {
+        return SubmissionLog::all();
+    }
 }

@@ -13,16 +13,13 @@ class ConfigController extends AdminSectionController
     protected $controllerType = 'config';
     private $bounceReason = 'Sorry, you require admin access to manage the global config.';
 
-    public function __construct(User $user)
+    public function __construct()
     {
         // Initialise parent constructor.
         parent::__construct();
 
         // Get a list of providers.
         $this->providerList = Provider::all();
-
-        // Initalise any Model dependencies.
-        $this->$user = $user;
     }
 
     /**
