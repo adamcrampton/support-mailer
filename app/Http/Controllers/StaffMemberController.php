@@ -20,7 +20,7 @@ class StaffMemberController extends AdminSectionController
         parent::__construct();
 
         // Get Staff List.
-        $this->staffList = $staffMember->getStaffMembers();
+        $this->staffList = $staffMember->getStaffMembers()->sortBy('staff_name');
     }
 
     /**
@@ -156,8 +156,12 @@ class StaffMemberController extends AdminSectionController
         }
 
         // Process the deletions (if there are any).
+        // Note we tag them with a 0 status to prevent orphaned records.
         if (! empty($deleteArray)) {
-            StaffMember::destroy($deleteArray);
+            // Set each item status.
+            StaffMember::whereIn('id', $deleteArray)->update([
+                'staff_status' => 0
+            ]);
         }
 
         // Build sucess messages to pass back to the front end.

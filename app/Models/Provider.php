@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Provider extends Model
 {
+	protected $fillable = ['provider_name', 'provider_status'];
+
     // Get all providers.
     public function getProviderList()
     {
-    	return Provider::all()->sortBy('provider_name');
+    	return Provider::where('provider_status', 1)->get();
     }
 }

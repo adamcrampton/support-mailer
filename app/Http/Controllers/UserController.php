@@ -22,7 +22,7 @@ class UserController extends AdminSectionController
         parent::__construct();
 
         // Get User List.
-        $this->userList = $user->getUsers();
+        $this->userList = $user->getUsers()->sortBy('user_name');
 
         // Get Permission List.
         $this->permissionList = Permission::all();
@@ -163,8 +163,12 @@ class UserController extends AdminSectionController
         }
 
         // Process the deletions (if there are any).
+        // Note we tag them with a 0 status to prevent orphaned records.
         if (! empty($deleteArray)) {
-            User::destroy($deleteArray);
+            // Set each item status.
+            User::whereIn('id', $deleteArray)->update([
+                'user_status' => 0
+            ]);
         }
 
         // Build sucess messages to pass back to the front end.

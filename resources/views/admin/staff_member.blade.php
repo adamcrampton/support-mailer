@@ -85,7 +85,7 @@
 						</tr>
 					@endforeach
 						<tr>
-							<td colspan="3" class="text-right">
+							<td colspan="4" class="text-right">
 								<input type="reset" class="btn btn-secondary" value="Cancel">
 								{!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
 							</td>

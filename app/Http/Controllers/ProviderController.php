@@ -20,7 +20,7 @@ class ProviderController extends AdminSectionController
         parent::__construct();
 
         // Get Provider List.
-        $this->providerList = $provider->getProviderList();
+        $this->providerList = $provider->getProviderList()->sortBy('provider_name');
     }
 
     /**
@@ -59,7 +59,7 @@ class ProviderController extends AdminSectionController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Provider $provider)
+    public function store(Request $request, Provider $provider, User $user)
     {
         // Check user is authorised.
         if ($user->cant('create', $provider)) {
@@ -153,8 +153,12 @@ class ProviderController extends AdminSectionController
         }
 
         // Process the deletions (if there are any).
+        // Note we tag them with a 0 status to prevent orphaned records.
         if (! empty($deleteArray)) {
-            Provider::destroy($deleteArray);
+            // Set each item status.
+            Provider::whereIn('id', $deleteArray)->update([
+                'provider_status' => 0
+            ]);
         }
 
         // Build sucess messages to pass back to the front end.
