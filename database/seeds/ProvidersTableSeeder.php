@@ -16,6 +16,7 @@ class ProvidersTableSeeder extends Seeder
         DB::table('providers')->insert([
             'provider_name' => 'Example Provider',
             'provider_email' => 'example@test.com',
+            'provider_status' => 1,
         	'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         	'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);

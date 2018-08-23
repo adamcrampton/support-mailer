@@ -19,6 +19,7 @@ class CreateStaffMembersTable extends Migration
             $table->string('staff_last_name');
             $table->string('staff_name');
             $table->string('staff_email');
+            $table->boolean('staff_status')->default(1);
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ class IssueTypesTableSeeder extends Seeder
 	        foreach ($defaultIssueTypes as $issueName) {
 	        	DB::table('issue_types')->insert([
 	            'issue_name' => $issueName,
+                'issue_status' => 1,
 	        	'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 	        	'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
 	        ]);

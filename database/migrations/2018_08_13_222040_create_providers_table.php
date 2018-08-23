@@ -17,6 +17,7 @@ class CreateProvidersTable extends Migration
             $table->increments('id');
             $table->string('provider_name');
             $table->string('provider_email');
+            $table->boolean('provider_status')->default(1);
             $table->timestamps();
         });
     }

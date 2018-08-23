@@ -20,7 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('user_last_name');
             $table->string('user_email')->unique();
             $table->string('password');
-            $table->string('permission_fk');
+            $table->tinyInteger('permission_fk');
+            $table->boolean('user_status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

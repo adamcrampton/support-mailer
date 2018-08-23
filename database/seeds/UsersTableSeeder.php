@@ -24,6 +24,7 @@ class UsersTableSeeder extends Seeder
             'user_last_name' => env('SEEDER_USER_LAST_NAME'),
             'user_name' => env('SEEDER_USER_DISPLAY_NAME'),
 			'user_email' => env('SEEDER_USER_EMAIL'),
+            'user_status' => 1,
         	'password' => Hash::make((env('SEEDER_USER_PASSWORD'))),
             'permission_fk' => 1
         ]);
