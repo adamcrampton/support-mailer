@@ -72,15 +72,15 @@
           {{-- Only admins can manage global config and users. --}}
             @can('admin-check', auth()->user())            
             <li class="nav-item">
-              <a class="nav-link" href="/config">Global Config</a>
+              <a class="nav-link {{ Request::is('config') ? 'active' : '' }}" href="/config">Global Config</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/users">Manage Users</a>
+              <a class="nav-link {{ Request::is('users') ? 'active' : '' }}" href="/users">Manage Users</a>
             </li>
             @endcan
             {{-- Any logged in viewer can see logs. --}}
             <li class="nav-item">
-              <a class="nav-link" href="/logs">View Logs</a>
+              <a class="nav-link {{ Request::is('logs') ? 'active' : '' }}" href="/logs">View Logs</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/logout">Log out</a>
