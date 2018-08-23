@@ -3,15 +3,20 @@
 ## Introduction
 The aim of this app is to provide a simple front end for staff to submit a support request, using fields to easily capture the data.
 
+## Frameworks
+Frameworks are Laravel 5.6, Blade, Bootstrap 4, and jQuery. I have configured the project to use LESS but there is very little to migrate should you want to use something else.
+
+## Features
 Configurable items include:
 * Form heading
 * Form title
 * Intro text on form page
 * Storing support provider name and email addresses (with a default setting)
 * Option to show one or multiple providers
-* Staff list, and the option to show a select or blank input for this (in case you don't want to maintain a staff list)
+* Staff list
+* Option to display staff list dropdown or regular input fields (in case you don't want to maintain a staff list)
 * Issue type list
-* User management
+* User management with access control
 
 On submitting, an email will be sent to the support provider with:
 * Intro text
@@ -41,11 +46,13 @@ As follows:
 1. Run npm run dev - this will copy Bootstrap 4 and jQuery into your public directory (via Webpack)
 
 ## TODO List
-* Check for existing relationships when processing deletions - probably better to tag them as deleted than actually delete (because of the log table)
-* Get password reset working
 * Build log viewer
-* Add file uploading functionality
+* Check for existing relationships when processing deletions - probably better to tag them as deleted than actually delete (because of the log table)
+* Update migrations to set default fields and constraints where appropriate
 * Optimise loops + database queries - there's some not-very-good stuff in there
+
+## Future Features
+* File uploading functionality
 * Pagination
 * Log exporting
 * LDAP to pull AD users in via cron job
