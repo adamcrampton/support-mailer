@@ -1,19 +1,19 @@
 @extends('layouts.admin-base')
 
 @section('content')
+    @if (session('status'))
     <div class="card-body">
-        @if (session('status'))
-            <div class="alert alert-success" role="alert">
-                {{ session('status') }}
-            </div>
-        @endif
+          <div class="alert alert-success" role="alert">
+              {{ session('status') }}
+          </div>
     </div>
+    @endif
     <!-- Page Content -->
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
           <h1 class="mt-5">Hi {{ Auth::user()->user_first_name }}</h1>
-          @can('editor-check', auth()->user())
+          @can('editor-functions', auth()->user())
           <p class="lead">Edit options</p>
           <ul>
             @foreach($adminSections as $name => $route)
@@ -23,7 +23,7 @@
             @endforeach
           </ul>
           @endcan
-          @can('admin-check', auth()->user())
+          @can('admin-functions', auth()->user())
           <p class="lead">Admin options</p>
           <ul>
             <li>

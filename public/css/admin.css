@@ -1,3 +1,6 @@
 .container.container__main-container {
   padding-top: 56px;
 }
+.alert {
+  top: 56px;
+}

@@ -60,7 +60,7 @@
                 </a>
               </li>
             {{-- Editor or higher access required for managing admin parameters. --}}
-            @can('editor-check', auth()->user())  
+            @can('editor-functions', auth()->user())  
 
 
             @foreach($adminSections as $name => $route)
@@ -70,7 +70,7 @@
             @endforeach
             @endcan
           {{-- Only admins can manage global config and users. --}}
-            @can('admin-check', auth()->user())            
+            @can('admin-functions', auth()->user())            
             <li class="nav-item">
               <a class="nav-link {{ Request::is('config') ? 'active' : '' }}" href="/config">Global Config</a>
             </li>

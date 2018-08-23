@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Permission;
 use App\Policies\UserPolicy;
+use Hash;
 use Validator;
 
 class UserController extends AdminSectionController
@@ -13,6 +15,7 @@ class UserController extends AdminSectionController
     protected $controllerType = 'user';
     protected $userList;
     protected $permissionList;
+    private $bounceReason = 'Sorry, you require admin access to manage users.';
 
     public function __construct(User $user)
     {
@@ -31,8 +34,13 @@ class UserController extends AdminSectionController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(User $user)
+    {        
+        // Check user is authorised.
+        if ($user->cant('index', $user)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // User Management home page.
         return view('admin.user', [
             'config' => $this->configData,
@@ -60,6 +68,11 @@ class UserController extends AdminSectionController
      */
     public function store(Request $request, User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('create', $user)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Validate then insert if successful.
         $request->validate($this->insertValidationOptions);
 
@@ -116,8 +129,13 @@ class UserController extends AdminSectionController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function batchUpdate(Request $request)
+    public function batchUpdate(Request $request, User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('update', $user)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Run each row through the validator.
         Validator::make($request->all(), $this->updateValidationOptions)->validate();
 
