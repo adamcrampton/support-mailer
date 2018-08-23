@@ -55,21 +55,33 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link {{ Request::is('admin') ? 'active' : '' }}" href="/admin">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
+                <a class="nav-link {{ Request::is('admin') ? 'active' : '' }}" href="/admin">Home
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+            {{-- Editor or higher access required for managing admin parameters. --}}
+            @can('editor-check', auth()->user())  
+
+
             @foreach($adminSections as $name => $route)
             <li class="nav-item">
               <a class="nav-link {{ Request::is($route) ? 'active' : '' }}" href="/{{ $route }}">{{ $name }}</a>
             </li>
             @endforeach
-            {{-- This route is guarded, but don't even both showing the option for non-admins. --}}
-            @if(Auth::user()->permission->permission_name === 'admin')
+            @endcan
+          {{-- Only admins can manage global config and users. --}}
+            @can('admin-check', auth()->user())            
+            <li class="nav-item">
+              <a class="nav-link" href="/config">Global Config</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="/users">Manage Users</a>
             </li>
-            @endif
+            @endcan
+            {{-- Any logged in viewer can see logs. --}}
+            <li class="nav-item">
+              <a class="nav-link" href="/logs">View Logs</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="/logout">Log out</a>
             </li>
