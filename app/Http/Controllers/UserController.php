@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Permission;
+use App\Policies\UserPolicy;
 use Validator;
 
 class UserController extends AdminSectionController
@@ -66,7 +67,7 @@ class UserController extends AdminSectionController
         $user->user_first_name = $request->user_first_name;
         $user->user_last_name = $request->user_last_name;
         $user->user_email = $request->user_email;
-        $user->password = $request->user_password;
+        $user->password = Hash::make($request->user_password);
         $user->permission_fk = $request->permission_list;
 
         $user->save();
