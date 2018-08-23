@@ -13,9 +13,10 @@ Configurable items include:
 * Intro text on form page
 * Storing support provider name and email addresses (with a default setting)
 * Option to show one or multiple providers
-* Staff list, and the option to show a select or blank input for this (in case you don't want to maintain a staff list)
+* Staff list
+* Option to show a select or blank inputs for this (in case you don't want to maintain a staff list)
 * Issue type list
-* User management
+* User management with access control
 
 On submitting, an email will be sent to the support provider with:
 * Intro text
