@@ -3,9 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\SubmissionLog;
+use App\Models\User;
+use App\Policies\SubmissionLogPolicy;
+use Validator;
 
-class SubmissionLogController extends Controller
+class SubmissionLogController extends AdminSectionController
 {
+    protected $controllerType = 'submissionLog';
+    protected $logData;
+
+    public function __construct(SubmissionLog $submissionLog)
+    {
+        // Initialise parent constructor.
+        parent::__construct();
+
+        // Get Issue List.
+        $this->logData = $submissionLog->getLogData();
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\IssueType;
+use App\Models\User;
+use App\Policies\IssueTypePolicy;
 use Validator;
 
 class IssueTypeController extends AdminSectionController
 {
     protected $controllerType = 'issueType';
     protected $issueList;
+    private $bounceReason = 'Sorry, you require editor access or higher to manage issue types.';
 
     public function __construct(IssueType $issueType)
     {
@@ -25,11 +28,15 @@ class IssueTypeController extends AdminSectionController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(IssueType $issueType, User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('index', $issueType)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Issue Type home page.
         // Since we have a single page for adding and editing these records, no need to use the create method.
-
         return view('admin.issue_type', [
             'config' => $this->configData,
             'adminSections' => $this->adminSections,
@@ -53,8 +60,13 @@ class IssueTypeController extends AdminSectionController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, IssueType $issueType)
+    public function store(Request $request, IssueType $issueType, User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('create', $issueType)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Validate then insert if successful.
         $request->validate($this->insertValidationOptions);
 
@@ -106,8 +118,13 @@ class IssueTypeController extends AdminSectionController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function batchUpdate(Request $request)
+    public function batchUpdate(Request $request, User $user, IssueType $issueType)
     {
+        // Check user is authorised.
+        if ($user->cant('update', $issueType)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Run each row through the validator.
         Validator::make($request->all(), $this->updateValidationOptions)->validate();
 

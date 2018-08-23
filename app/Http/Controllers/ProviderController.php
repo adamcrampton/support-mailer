@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Provider;
+use App\Models\User;
+use App\Policies\ProviderPolicy;
 use Validator;
 
 class ProviderController extends AdminSectionController
 {
     protected $controllerType = 'provider';
     protected $providerList;
+    private $bounceReason = 'Sorry, you require editor access or higher to manage providers.';
 
     public function __construct(Provider $provider)
     {
@@ -25,8 +28,13 @@ class ProviderController extends AdminSectionController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Provider $provider, User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('index', $provider)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Provider home page.
         return view('admin.provider', [
             'config' => $this->configData,
@@ -53,6 +61,11 @@ class ProviderController extends AdminSectionController
      */
     public function store(Request $request, Provider $provider)
     {
+        // Check user is authorised.
+        if ($user->cant('create', $provider)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Validate then insert if successful.
         $request->validate($this->insertValidationOptions);
 
@@ -105,8 +118,13 @@ class ProviderController extends AdminSectionController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function batchUpdate(Request $request)
+    public function batchUpdate(Request $request, User $user, Provider $provider)
     {
+        // Check user is authorised.
+        if ($user->cant('update', $user)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Run each row through the validator.
         Validator::make($request->all(), $this->updateValidationOptions)->validate();
 

@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\StaffMember;
+use App\Models\User;
+use App\Policies\StaffMemberPolicy;
 use Validator;
 
 class StaffMemberController extends AdminSectionController
 {
     protected $controllerType = 'staffMember';
     protected $staffList;
+    private $bounceReason = 'Sorry, you require editor access or higher to manage staff members.';
 
     public function __construct(StaffMember $staffMember)
     {
@@ -25,8 +28,13 @@ class StaffMemberController extends AdminSectionController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(StaffMember $staffMember, User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('index', $staffMember)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Staff Member home page.
         return view('admin.staff_member', [
             'config' => $this->configData,
@@ -51,8 +59,13 @@ class StaffMemberController extends AdminSectionController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, StaffMember $staffMember)
+    public function store(Request $request, StaffMember $staffMember, User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('create', $staffMember)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Validate then insert if successful.
         $request->validate($this->insertValidationOptions);
 
@@ -108,8 +121,13 @@ class StaffMemberController extends AdminSectionController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function batchUpdate(Request $request)
+    public function batchUpdate(Request $request, User $user, StaffMember $staffMember)
     {
+        // Check user is authorised.
+        if ($user->cant('update', $staffMember)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Run each row through the validator.
         Validator::make($request->all(), $this->updateValidationOptions)->validate();
 

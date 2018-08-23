@@ -3,11 +3,11 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\IssueType;
+use App\StaffMember;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Auth;
 
-class IssueTypePolicy
+class StaffMemberPolicy
 {
     use HandlesAuthorization;
 
@@ -26,19 +26,19 @@ class IssueTypePolicy
     }
 
     /**
-     * Determine whether the user can view the issue type.
+     * Determine whether the user can view the staff member.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\IssueType  $issueType
+     * @param  \App\StaffMember  $staffMember
      * @return mixed
      */
-    public function view(User $user, IssueType $issueType)
+    public function view(User $user, StaffMember $staffMember)
     {
         //
     }
 
     /**
-     * Determine whether the user can create issue types.
+     * Determine whether the user can create staff members.
      *
      * @param  \App\Models\User  $user
      * @return mixed
@@ -49,49 +49,49 @@ class IssueTypePolicy
     }
 
     /**
-     * Determine whether the user can update the issue type.
+     * Determine whether the user can update the staff member.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\IssueType  $issueType
+     * @param  \App\StaffMember  $staffMember
      * @return mixed
      */
-    public function update(User $user, IssueType $issueType)
+    public function update(User $user, StaffMember $staffMember)
     {
         return in_array(Auth::user()->permission->permission_name, $this->defaultPermissionLevels);
     }
 
     /**
-     * Determine whether the user can delete the issue type.
+     * Determine whether the user can delete the staff member.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\IssueType  $issueType
+     * @param  \App\StaffMember  $staffMember
      * @return mixed
      */
-    public function delete(User $user, IssueType $issueType)
+    public function delete(User $user, StaffMember $staffMember)
     {
         //
     }
 
     /**
-     * Determine whether the user can restore the issue type.
+     * Determine whether the user can restore the staff member.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\IssueType  $issueType
+     * @param  \App\StaffMember  $staffMember
      * @return mixed
      */
-    public function restore(User $user, IssueType $issueType)
+    public function restore(User $user, StaffMember $staffMember)
     {
         //
     }
 
     /**
-     * Determine whether the user can permanently delete the issue type.
+     * Determine whether the user can permanently delete the staff member.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\IssueType  $issueType
+     * @param  \App\StaffMember  $staffMember
      * @return mixed
      */
-    public function forceDelete(User $user, IssueType $issueType)
+    public function forceDelete(User $user, StaffMember $staffMember)
     {
         //
     }

@@ -5,19 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Config;
 use App\Models\Provider;
+use App\Models\User;
 use App\Traits\AdminTrait;
 
 class ConfigController extends AdminSectionController
 {
     protected $controllerType = 'config';
+    private $bounceReason = 'Sorry, you require admin access to manage the global config.';
 
-    public function __construct()
+    public function __construct(User $user)
     {
         // Initialise parent constructor.
         parent::__construct();
 
         // Get a list of providers.
         $this->providerList = Provider::all();
+
+        // Initalise any Model dependencies.
+        $this->$user = $user;
     }
 
     /**
@@ -25,8 +30,13 @@ class ConfigController extends AdminSectionController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('index', $user)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Global Config home page.
         return view('admin.config', [
             'config' => $this->configData,
@@ -85,8 +95,13 @@ class ConfigController extends AdminSectionController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, User $user)
     {
+        // Check user is authorised.
+        if ($user->cant('update', $user)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
         // Validate then update the Global Config.
         $request->validate($this->updateValidationOptions);
 
