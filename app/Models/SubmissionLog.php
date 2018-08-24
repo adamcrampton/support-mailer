@@ -27,4 +27,13 @@ class SubmissionLog extends Model
     {
         return SubmissionLog::all();
     }
+
+    // Eloquent relationship bindings.
+    public function provider() {
+        return $this->hasOne('App\Models\Provider', 'id', 'provider_name_fk');
+    }
+
+    public function issueType() {
+        return $this->hasOne('App\Models\IssueType', 'id', 'issue_type_fk');
+    }
 }

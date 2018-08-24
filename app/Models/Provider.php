@@ -13,4 +13,15 @@ class Provider extends Model
     {
     	return Provider::where('provider_status', 1)->get();
     }
+
+    // Eloquent relationship bindings.
+    public function config()
+    {
+    	return $this->belongsTo('App\Models\Config', 'id');
+    }
+
+    public function submissionLog()
+    {
+    	return $this->hasMany('App\Models\SubmissionLog', 'id');
+    }
 }

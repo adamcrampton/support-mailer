@@ -13,4 +13,10 @@ class IssueType extends Model
     {
     	return IssueType::where('issue_status', 1)->get();
     }
+
+    // Eloquent relationship bindings.
+    public function submissionLog()
+    {
+    	return $this->hasMany('App\Models\SubmissionLog', 'id');
+    }
 }

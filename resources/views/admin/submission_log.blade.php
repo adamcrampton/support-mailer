@@ -30,9 +30,9 @@
 							<td>{{ $data->staff_name }}</td>
 							<td>{{ $data->staff_email }}</td>
 							<td>{{ $data->staff_phone }}</td>
-							<td>{{ $data->provider_name_fk }}</td>
+							<td>{{ $data->provider->provider_name }}</td>
 							<td>{{ $data->contact_method }}</td>
-							<td>{{ $data->issue_type_fk }}</td>
+							<td>{{ $data->issueType->issue_name }}</td>
 						</tr>
 					@endforeach
 				</table>
