@@ -12,6 +12,7 @@ class ProviderController extends AdminSectionController
 {
     protected $controllerType = 'provider';
     protected $providerList;
+    protected $deletedProviderList;
     private $bounceReason = 'Sorry, you require editor access or higher to manage providers.';
 
     public function __construct(Provider $provider)

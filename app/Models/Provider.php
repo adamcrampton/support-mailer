@@ -14,6 +14,11 @@ class Provider extends Model
     	return Provider::where('provider_status', 1)->get();
     }
 
+    public function getDeletedProviderList()
+    {
+        return Provider::where('provider_status', 0)->get();
+    }
+
     // Eloquent relationship bindings.
     public function config()
     {

@@ -14,6 +14,7 @@ class UserController extends AdminSectionController
     protected $controllerType = 'user';
     protected $userList;
     protected $permissionList;
+    protected $deletedUserList;
     private $bounceReason = 'Sorry, you require admin access to manage users.';
 
     public function __construct(User $user)

@@ -6,63 +6,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="mt-5">Users</h1>
-				<h2 class="mt-5">Add New User</h2>
-				<div class="card-body">
-					{!! Form::open(['action' => ['UserController@store'], 'class' => 'form', 'id' => 'add_form']) !!}
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">User First Name</label>
-				      <div class="col-lg-9">
-				          {{ Form::text('user_first_name', null, ['class' => 'form-control', 'id' => 'user_first_name', 'required']) }}
-					  </div>
-					</div>
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">User Last Name</label>
-				      <div class="col-lg-9">
-				          {{ Form::text('user_last_name', null, ['class' => 'form-control', 'id' => 'user_last_name', 'required']) }}
-					  </div>
-					</div>
-					{{-- Hidden field for concatenating first + last names - updates automatically via JS --}}
-				    {{ Form::text('user_name', 'user_name_placeholder', ['class' => 'form-control', 'id' => 'user_name', 'style' => 'display: none']) }}
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">User Email</label>
-				      <div class="col-lg-9">
-				          {{ Form::text('user_email', null, ['class' => 'form-control', 'id' => 'user_email', 'required']) }}
-					  </div>
-					</div>
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">Password</label>
-				      <div class="col-lg-9">
-				          {{ Form::password('user_password', ['class' => 'form-control', 'required']) }}
-					  </div>
-					</div>
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">Permission Level</label>
-				      <div class="col-lg-9">
-						<select class="form-control" name="permission_list" id="permission_list" required>
-							<option value required>Please select one:</option>
-							@foreach ($permissionList as $permission)
-							<option value="{{ $permission->id }}">{{ $permission->permission_name }}</option>
-							@endforeach
-						</select>
-					  </div>
-					</div>
-					<div class="form-group row text-right">
-					  <label class="col-lg-3 col-form-label form-control-label"></label>
-					  <div class="col-lg-9">
-					      <input type="reset" class="btn btn-secondary" value="Cancel">
-					      {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
-					  </div>
-					</div>
-				{!! Form::close() !!}
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<h2 class="mt-5">Manage Users</h2>
+				<h2 class="mt-5 float-md-left">Restore Deleted Users</h2>
 				<div class="float-md-right">
-					<a href="user_restore" class="btn btn-primary btn-right">Restore Deleted Users</a>
+					<a href="user" class="btn btn-primary btn-right">Go Back</a>
 				</div>
 				{!! Form::open(['action' => ['UserController@batchUpdate'], 'class' => 'form', 'id' => 'update_form']) !!}
 				<table class="table table-hover">
@@ -112,7 +58,7 @@
 							<td class="text-center">
 								<div class="form-check">
 								{{-- There will either be a value or not in $_POST, so the actual value of the field set doesn't matter. --}}
-								{{ Form::checkbox('user['. $index .'][delete]', null, false, ['class' => 'form-check-input']) }}
+								{{ Form::checkbox('user['. $index .'][restore]', null, false, ['class' => 'form-check-input']) }}
 								</div>
 							</td>
 						</tr>

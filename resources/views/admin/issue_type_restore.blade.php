@@ -5,7 +5,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 mt-5">
-				<h2 class="float-left">Restore Deleted Issue Types</h2>
+				<h2 class="float-md-left">Restore Deleted Issue Types</h2>
 				<div class="float-md-right">
 					<a href="issue_types" class="btn btn-primary btn-right">Go Back</a>
 				</div>

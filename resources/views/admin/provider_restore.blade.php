@@ -1,42 +1,14 @@
 @extends('layouts.admin-base')
 
 @section('content')
+
 <!-- Page Content -->
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="mt-5">Providers</h1>
-				<h2 class="mt-5">Add New Provider</h2>
-				<div class="card-body">
-					{!! Form::open(['action' => ['ProviderController@store'], 'class' => 'form']) !!}
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">Provider Name</label>
-				      <div class="col-lg-9">
-				          {{ Form::text('provider_name', null, ['class' => 'form-control', 'id' => 'provider_name', 'required']) }}
-					  </div>
-					</div>
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">Provider Email</label>
-				      <div class="col-lg-9">
-				          {{ Form::text('provider_email', null, ['class' => 'form-control', 'id' => 'provider_email', 'required']) }}
-					  </div>
-					</div>
-					<div class="form-group row text-right">
-					  <label class="col-lg-3 col-form-label form-control-label"></label>
-					  <div class="col-lg-9">
-					      <input type="reset" class="btn btn-secondary" value="Cancel">
-					      {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
-					  </div>
-					</div>
-				{!! Form::close() !!}
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<h2 class="mt-5 float-md-left">Manage Providers</h2>
+				<h2 class="mt-5 float-md-left">Restore Deleted Providers</h2>
 				<div class="float-md-right">
-					<a href="provider_restore" class="btn btn-primary btn-right">Restore Deleted Issue Types</a>
+					<a href="provider" class="btn btn-primary btn-right">Go Back</a>
 				</div>
 				{!! Form::open(['action' => ['ProviderController@batchUpdate'], 'class' => 'form']) !!}
 				<table class="table table-hover">
@@ -63,7 +35,7 @@
 							<td class="text-center">
 								<div class="form-check">
 								{{-- There will either be a value or not in $_POST, so the actual value of the field set doesn't matter. --}}
-								{{ Form::checkbox('provider['. $index .'][delete]', null, false, ['class' => 'form-check-input']) }}
+								{{ Form::checkbox('provider['. $index .'][restore]', null, false, ['class' => 'form-check-input']) }}
 								</div>
 							</td>
 						</tr>

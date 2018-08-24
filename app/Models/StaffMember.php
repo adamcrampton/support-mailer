@@ -13,4 +13,9 @@ class StaffMember extends Model
     {
     	return StaffMember::where('staff_status', 1)->get();
     }
+
+    public function getDeletedStaffMembers()
+    {
+    	return StaffMember::where('staff_status', 0)->get();
+    }
 }

@@ -6,46 +6,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="mt-5">Staff Members</h1>
-				<h2 class="mt-5">Add New Staff Member</h2>
-				<div class="card-body">
-					{!! Form::open(['action' => ['StaffMemberController@store'], 'class' => 'form', 'id' => 'add_form']) !!}
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">Staff Member First Name</label>
-				      <div class="col-lg-9">
-				          {{ Form::text('staff_first_name', null, ['class' => 'form-control', 'id' => 'staff_first_name', 'required']) }}
-					  </div>
-					</div>
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">Staff Member Last Name</label>
-				      <div class="col-lg-9">
-				          {{ Form::text('staff_last_name', null, ['class' => 'form-control', 'id' => 'staff_last_name', 'required']) }}
-					  </div>
-					</div>
-					{{-- Hidden field for concatenating first + last names - updates automatically via JS --}}
-				    {{ Form::text('staff_name', 'staff_name_placeholder', ['class' => 'form-control', 'id' => 'staff_name', 'style' => 'display: none']) }}
-					<div class="form-group row required">
-				      <label class="col-lg-3 col-form-label form-control-label">Staff Member Email</label>
-				      <div class="col-lg-9">
-				          {{ Form::text('staff_email', null, ['class' => 'form-control', 'id' => 'staff_email', 'required']) }}
-					  </div>
-					</div>
-					<div class="form-group row text-right">
-					  <label class="col-lg-3 col-form-label form-control-label"></label>
-					  <div class="col-lg-9">
-					      <input type="reset" class="btn btn-secondary" value="Cancel">
-					      {!! Form::submit('Submit', ['class' => 'btn btn-primary']) !!}
-					  </div>
-					</div>
-				{!! Form::close() !!}
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<h2 class="mt-5 float-md-left">Manage Staff Members</h2>
+				<h2 class="mt-5 float-md-left">Restore Deleted Staff Members</h2>
 				<div class="float-md-right">
-					<a href="staff_members_restore" class="btn btn-primary btn-right">Restore Deleted Staff Members</a>
+					<a href="staff_member" class="btn btn-primary btn-right">Go Back</a>
 				</div>
 				{!! Form::open(['action' => ['StaffMemberController@batchUpdate'], 'class' => 'form', 'id' => 'update_form']) !!}
 				<table class="table table-hover">
@@ -82,7 +45,7 @@
 							<td class="text-center">
 								<div class="form-check">
 								{{-- There will either be a value or not in $_POST, so the actual value of the field set doesn't matter. --}}
-								{{ Form::checkbox('staff['. $index .'][delete]', null, false, ['class' => 'form-check-input']) }}
+								{{ Form::checkbox('staff['. $index .'][restore]', null, false, ['class' => 'form-check-input']) }}
 								</div>
 							</td>
 						</tr>

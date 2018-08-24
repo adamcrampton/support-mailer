@@ -28,7 +28,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-12 mt-5">
-				<h2 class="float-left">Manage Issue Types</h2>
+				<h2 class="float-md-left">Manage Issue Types</h2>
 				<div class="float-md-right">
 					<a href="issue_types_restore" class="btn btn-primary btn-right">Restore Deleted Issue Types</a>
 				</div>

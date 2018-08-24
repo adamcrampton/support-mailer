@@ -34,6 +34,11 @@ class User extends Authenticatable
         return User::where('user_status', 1)->get();
     }
 
+    public function getDeletedUsers()
+    {
+        return User::where('user_status', 0)->get();
+    }
+
     // Users have a single permission level.
     public function permission()
     {

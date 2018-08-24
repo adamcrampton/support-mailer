@@ -49,9 +49,6 @@ As follows:
 1. Run npm install from the project root
 1. Run npm run dev - this will copy Bootstrap 4 and jQuery into your public directory (via Webpack)
 
-## TODO List
-* Add archived views to allow restoration of soft deleted items
-
 ## Future Features
 * File uploading functionality
 * Pagination
