@@ -21,6 +21,9 @@ class IssueTypeController extends AdminSectionController
 
         // Get Issue List.
         $this->issueList = $issueType->getIssueTypes()->sortBy('issue_name');
+
+        // Get Deleted Issues.
+        $this->deletedIssueList = $issueType->getDeletedIssueTypes()->sortBy('issue_name');
     }
 
     /**
@@ -41,6 +44,22 @@ class IssueTypeController extends AdminSectionController
             'config' => $this->configData,
             'adminSections' => $this->adminSections,
             'issueList' => $this->issueList
+        ]);
+    }
+
+    public function indexRestore(IssueType $issueType, User $user)
+    {
+        // Check user is authorised.
+        if ($user->cant('index', $issueType)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
+        // Issue Type home page.
+        // Since we have a single page for adding and editing these records, no need to use the create method.
+        return view('admin.issue_type_restore', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections,
+            'issueList' => $this->deletedIssueList
         ]);
     }
 
@@ -131,11 +150,14 @@ class IssueTypeController extends AdminSectionController
         // Check for any items tagged for deletion. If found, add to array for batch deletion.
         $deleteArray = $this->buildDeleteArray($request, 'issue');
 
+        // Check for any items tagged for restoration. If found, add to array for batch restore.
+        $restoreArray = $this->buildRestoreArray($request, 'issue');
+
         // Determine which fields have changed, and prepare array for batch update.
         $updateArray = $this->buildUpdateArray($request, 'issue', ['issue_name']);        
 
         // Just return with warning if no items were updated or deleted.
-        $this->checkForRecordChanges($deleteArray, $updateArray, 'issue_types.index');
+        $this->checkForRecordChanges($deleteArray, $updateArray, $restoreArray, 'issue_types.index');
 
         // Unset any items tagged for deletion so we don't try to update them.
         // This may occur in a scenario where the field is edited and 'Delete' is also ticked.
@@ -153,7 +175,7 @@ class IssueTypeController extends AdminSectionController
         }
 
         // Process the deletions (if there are any).
-        // Note we tag them with a 0 status to prevent orphaned records.
+        
         if (! empty($deleteArray)) {
             // Set each item status.
             IssueType::whereIn('id', $deleteArray)->update([
@@ -161,10 +183,39 @@ class IssueTypeController extends AdminSectionController
             ]);
         }
 
+        // Process any deletions.
+        // Note we tag them with a 0 status to prevent orphaned records.
+        if (! empty($deleteArray)) {
+            $deleteArray = $this->batchDelete($deleteArray);
+        }
+
+        // Process any restorations (setting 1 status).
+        if (! empty($restoreArray)) {
+            $batchArray = $this->batchRestore($restoreArray);
+        }
+
         // Build sucess messages to pass back to the front end.
-        $successMessage = $this->buildSuccessMessage($deleteArray, $updateArray);
+        $successMessage = $this->buildSuccessMessage($deleteArray, $updateArray, $restoreArray);
 
         return redirect()->route('issue_types.index')->with('success', $successMessage);
+    }
+
+    private function batchDelete($deleteArray)
+    {
+        // Set each item status.
+        IssueType::whereIn('id', $deleteArray)->update([
+            'issue_status' => 0
+        ]);
+
+        return $deleteArray;
+    }
+
+    private function batchRestore($restoreArray)
+    {
+        // Set each item status.
+        IssueType::whereIn('id', $restoreArray)->update([
+            'issue_status' => 1
+        ]);
     }
 
     /**

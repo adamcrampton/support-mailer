@@ -9,6 +9,7 @@ Route::resource('admin', 'AdminController');
 // CRUD routes.
 Route::resource('config', 'ConfigController');
 Route::resource('issue_types', 'IssueTypeController');
+Route::get('issue_types_restore', 'IssueTypeController@indexRestore');
 Route::post('/issue_type_batch_update', 'IssueTypeController@batchUpdate');
 Route::resource('providers', 'ProviderController');
 Route::post('/provider_batch_update', 'ProviderController@batchUpdate');

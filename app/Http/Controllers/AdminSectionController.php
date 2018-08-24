@@ -49,6 +49,22 @@ class AdminSectionController extends Controller
         return $deleteArray;
     }
 
+    protected function buildRestoreArray($request, $fieldPrefix)
+    {
+        // Checks the request for items tagged for deletion and return an array if found.
+        $restoreArray = [];
+
+        $request->fieldPrefix = $fieldPrefix;
+
+        foreach ($request->$fieldPrefix as $item => $fieldValues) {
+            if (array_key_exists('restore', $fieldValues)) {
+                $restoreArray[$fieldValues[$fieldPrefix . '_name']] = $fieldValues['id'];
+            }   
+        }
+
+        return $restoreArray;
+    }
+
     protected function buildUpdateArray($request, $fieldPrefix, array $fieldsToCheck)
     {
     	// Checks the request for any fields that have been updated and return an array if found.
@@ -69,10 +85,10 @@ class AdminSectionController extends Controller
         return $updateArray;
     }
 
-    protected function checkForRecordChanges($deleteArray, $updateArray, $returnRoute)
+    protected function checkForRecordChanges($deleteArray, $updateArray, $restoreArray, $returnRoute)
     {
     	// If nothing has been updated, we can just return to the view without any further processing.
-    	if (empty($deleteArray) && empty($updateArray)) {
+    	if (empty($deleteArray) && empty($updateArray) && empty($restoreArray)) {
             return redirect()->route($returnRoute)->with('warning', 'No items to update or delete.');
         }
     }
@@ -87,11 +103,12 @@ class AdminSectionController extends Controller
     	return $updateArray;
     }
 
-    protected function buildSuccessMessage($deleteArray, $updateArray)
+    protected function buildSuccessMessage($deleteArray, $updateArray, $restoreArray)
     {
     	// Nested arrays, so count all items (there's probably a neater way to do this).
     	$updateCount = 0;
     	$deleteCount = count($deleteArray) ? count($deleteArray) : 0;
+        $restoreCount = count($restoreArray) ? count($restoreArray) : 0;
 
     	if (count($updateArray)) {
     		foreach($updateArray as $updates) {
@@ -123,6 +140,17 @@ class AdminSectionController extends Controller
 
             $successMessage .= '</ul>';   
         }
+
+        if (! empty($restoreArray)) {
+            $successMessage .= '<p>'. $restoreCount .' record(s) were restored:</p>';
+            $successMessage .= '<ul>';
+
+            foreach ($restoreArray as $itemName => $itemId) {
+                $successMessage .= '<li>'. $itemName .'</li>';
+            }
+
+            $successMessage .= '</ul>';   
+        }        
 
         return $successMessage;
     }

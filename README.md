@@ -50,7 +50,7 @@ As follows:
 1. Run npm run dev - this will copy Bootstrap 4 and jQuery into your public directory (via Webpack)
 
 ## TODO List
-* Optimise loops + database queries - there's some not-very-good stuff in there
+* Add archived views to allow restoration of soft deleted items
 
 ## Future Features
 * File uploading functionality
