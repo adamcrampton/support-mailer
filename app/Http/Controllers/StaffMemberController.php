@@ -12,6 +12,7 @@ class StaffMemberController extends AdminSectionController
 {
     protected $controllerType = 'staffMember';
     protected $staffList;
+    protected $deletedStaffList;
     private $bounceReason = 'Sorry, you require editor access or higher to manage staff members.';
 
     public function __construct(StaffMember $staffMember)
@@ -21,6 +22,9 @@ class StaffMemberController extends AdminSectionController
 
         // Get Staff List.
         $this->staffList = $staffMember->getStaffMembers()->sortBy('staff_name');
+
+        // Get Deleted Staff.
+        $this->deletedStaffList = $staffMember->getDeletedStaffMembers()->sortBy('staff_name');
     }
 
     /**
@@ -41,6 +45,21 @@ class StaffMemberController extends AdminSectionController
             'adminSections' => $this->adminSections,
             'staffList' => $this->staffList
         ]); 
+    }
+
+    public function indexRestore(StaffMember $staffMember, User $user)
+    {
+        // Check user is authorised.
+        if ($user->cant('index', $staff_member)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
+        // Staff Member restore page.
+        return view('admin.staff_member_restore', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections,
+            'staffList' => $this->deletedStaffList
+        ]);
     }
 
     /**
@@ -134,11 +153,14 @@ class StaffMemberController extends AdminSectionController
         // Check for any items tagged for deletion. If found, add to array for batch deletion.
         $deleteArray = $this->buildDeleteArray($request, 'staff');
 
+        // Check for any items tagged for restoration. If found, add to array for batch restoration.
+        $restoreArray = $this->buildRestoreArray($request, 'staff');
+
         // Determine which fields have changed, and prepare array for batch update.
         $updateArray = $this->buildUpdateArray($request, 'staff', ['staff_name', 'staff_first_name', 'staff_last_name', 'staff_email']);   
 
         // Just return with warning if no items were updated or deleted.
-        $this->checkForRecordChanges($deleteArray, $updateArray, 'staff_members.index');
+        $this->checkForRecordChanges($deleteArray, $updateArray, $restoreArray, $restoreArray, 'staff_members.index');
 
         // Unset any items tagged for deletion so we don't try to update them.
         // This may occur in a scenario where the field is edited and 'Delete' is also ticked.
@@ -155,19 +177,39 @@ class StaffMemberController extends AdminSectionController
             }
         }
 
-        // Process the deletions (if there are any).
+        // Process any deletions.
         // Note we tag them with a 0 status to prevent orphaned records.
         if (! empty($deleteArray)) {
-            // Set each item status.
-            StaffMember::whereIn('id', $deleteArray)->update([
-                'staff_status' => 0
-            ]);
+            $deleteArray = $this->batchDelete($deleteArray);
+        }
+
+        // Process any restorations (setting 1 status).
+        if (! empty($restoreArray)) {
+            $batchArray = $this->batchRestore($restoreArray);
         }
 
         // Build sucess messages to pass back to the front end.
-        $successMessage = $this->buildSuccessMessage($deleteArray, $updateArray);
+        $successMessage = $this->buildSuccessMessage($deleteArray, $updateArray, $restoreArray);
 
         return redirect()->route('staff_members.index')->with('success', $successMessage);
+    }
+
+    private function batchDelete($deleteArray)
+    {
+        // Set each item status.
+        StaffMember::whereIn('id', $deleteArray)->update([
+            'staff_status' => 0
+        ]);
+
+        return $deleteArray;
+    }
+
+    private function batchRestore($restoreArray)
+    {
+        // Set each item status.
+        StaffMember::whereIn('id', $restoreArray)->update([
+            'staff_status' => 1
+        ]);
     }
 
     /**

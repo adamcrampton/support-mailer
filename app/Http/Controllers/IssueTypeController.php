@@ -12,6 +12,7 @@ class IssueTypeController extends AdminSectionController
 {
     protected $controllerType = 'issueType';
     protected $issueList;
+    protected $deletedIssueList;
     private $bounceReason = 'Sorry, you require editor access or higher to manage issue types.';
 
     public function __construct(IssueType $issueType)
@@ -54,8 +55,7 @@ class IssueTypeController extends AdminSectionController
             return redirect()->route('admin.index')->with('warning', $this->bounceReason);
         }
 
-        // Issue Type home page.
-        // Since we have a single page for adding and editing these records, no need to use the create method.
+        // Issue Type restore page.
         return view('admin.issue_type_restore', [
             'config' => $this->configData,
             'adminSections' => $this->adminSections,
@@ -172,15 +172,6 @@ class IssueTypeController extends AdminSectionController
                     ]);
                 }
             }
-        }
-
-        // Process the deletions (if there are any).
-        
-        if (! empty($deleteArray)) {
-            // Set each item status.
-            IssueType::whereIn('id', $deleteArray)->update([
-                'issue_status' => 0
-            ]);
         }
 
         // Process any deletions.

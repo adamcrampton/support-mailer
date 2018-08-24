@@ -24,6 +24,9 @@ class UserController extends AdminSectionController
         // Get User List.
         $this->userList = $user->getUsers()->sortBy('user_name');
 
+        // Get Deleted Users.
+        $this->deletedUserList = $user->getDeletedUsers()->sortBy('user_name');
+
         // Get Permission List.
         $this->permissionList = Permission::all();
     }
@@ -47,6 +50,21 @@ class UserController extends AdminSectionController
             'userList' => $this->userList,
             'permissionList' => $this->permissionList
         ]);  
+    }
+
+    public function indexRestore(User $user)
+    {
+        // Check user is authorised.
+        if ($user->cant('index', $user)) {
+            return redirect()->route('admin.index')->with('warning', $this->bounceReason);
+        }
+
+        // User restore page.
+        return view('admin.user_restore', [
+            'config' => $this->configData,
+            'adminSections' => $this->adminSections,
+            'userList' => $this->deletedUserList
+        ]);
     }
 
     /**
@@ -141,11 +159,14 @@ class UserController extends AdminSectionController
         // Check for any items tagged for deletion. If found, add to array for batch deletion.
         $deleteArray = $this->buildDeleteArray($request, 'user');
 
+        // Check for any items tagged for restoration. If found, add to array for batch restore.
+        $restoreArray = $this->buildRestoreArray($request, 'user');
+
         // Determine which fields have changed, and prepare array for batch update.
         $updateArray = $this->buildUpdateArray($request, 'user', ['user_name', 'user_first_name', 'user_last_name', 'user_email']);   
 
         // Just return with warning if no items were updated or deleted.
-        $this->checkForRecordChanges($deleteArray, $updateArray, 'users.index');
+        $this->checkForRecordChanges($deleteArray, $updateArray, $restoreArray, 'users.index');
 
         // Unset any items tagged for deletion so we don't try to update them.
         // This may occur in a scenario where the field is edited and 'Delete' is also ticked.
@@ -162,19 +183,39 @@ class UserController extends AdminSectionController
             }
         }
 
-        // Process the deletions (if there are any).
+        // Process any deletions.
         // Note we tag them with a 0 status to prevent orphaned records.
         if (! empty($deleteArray)) {
-            // Set each item status.
-            User::whereIn('id', $deleteArray)->update([
-                'user_status' => 0
-            ]);
+            $deleteArray = $this->batchDelete($deleteArray);
+        }
+
+        // Process any restorations (setting 1 status).
+        if (! empty($restoreArray)) {
+            $batchArray = $this->batchRestore($restoreArray);
         }
 
         // Build sucess messages to pass back to the front end.
-        $successMessage = $this->buildSuccessMessage($deleteArray, $updateArray);
+        $successMessage = $this->buildSuccessMessage($deleteArray, $updateArray, $restoreArray);
 
         return redirect()->route('users.index')->with('success', $successMessage);
+    }
+
+    private function batchDelete($deleteArray)
+    {
+        // Set each item status.
+        User::whereIn('id', $deleteArray)->update([
+            'user_status' => 0
+        ]);
+
+        return $deleteArray;
+    }
+
+    private function batchRestore($restoreArray)
+    {
+        // Set each item status.
+        User::whereIn('id', $restoreArray)->update([
+            'user_status' => 1
+        ]);
     }
 
     /**
