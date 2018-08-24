@@ -42,8 +42,8 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-12">
-				<h2 class="mt-5 float-md-left">Manage Staff Members</h2>
+			<div class="col-lg-12 mt-5">
+				<h2 class="float-md-left">Manage Staff Members</h2>
 				<div class="float-md-right">
 					<a href="staff_members_restore" class="btn btn-primary btn-right">Restore Deleted Staff Members</a>
 				</div>

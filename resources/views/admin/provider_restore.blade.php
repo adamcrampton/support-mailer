@@ -5,10 +5,10 @@
 <!-- Page Content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
-				<h2 class="mt-5 float-md-left">Restore Deleted Providers</h2>
+			<div class="col-lg-12 mt-5">
+				<h2 class="float-md-left">Restore Deleted Providers</h2>
 				<div class="float-md-right">
-					<a href="provider" class="btn btn-primary btn-right">Go Back</a>
+					<a href="providers" class="btn btn-primary btn-right">Go Back</a>
 				</div>
 				{!! Form::open(['action' => ['ProviderController@batchUpdate'], 'class' => 'form']) !!}
 				<table class="table table-hover">

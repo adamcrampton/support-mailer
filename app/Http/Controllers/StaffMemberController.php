@@ -50,7 +50,7 @@ class StaffMemberController extends AdminSectionController
     public function indexRestore(StaffMember $staffMember, User $user)
     {
         // Check user is authorised.
-        if ($user->cant('index', $staff_member)) {
+        if ($user->cant('index', $staffMember)) {
             return redirect()->route('admin.index')->with('warning', $this->bounceReason);
         }
 

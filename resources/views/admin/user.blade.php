@@ -59,10 +59,10 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-12">
-				<h2 class="mt-5">Manage Users</h2>
+			<div class="col-lg-12 mt-5">
+				<h2 class="float-md-left">Manage Users</h2>
 				<div class="float-md-right">
-					<a href="user_restore" class="btn btn-primary btn-right">Restore Deleted Users</a>
+					<a href="users_restore" class="btn btn-primary btn-right">Restore Deleted Users</a>
 				</div>
 				{!! Form::open(['action' => ['UserController@batchUpdate'], 'class' => 'form', 'id' => 'update_form']) !!}
 				<table class="table table-hover">

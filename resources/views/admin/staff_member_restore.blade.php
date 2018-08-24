@@ -5,10 +5,10 @@
 <!-- Page Content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
-				<h2 class="mt-5 float-md-left">Restore Deleted Staff Members</h2>
+			<div class="col-lg-12 mt-5">
+				<h2 class="float-md-left">Restore Deleted Staff Members</h2>
 				<div class="float-md-right">
-					<a href="staff_member" class="btn btn-primary btn-right">Go Back</a>
+					<a href="staff_members" class="btn btn-primary btn-right">Go Back</a>
 				</div>
 				{!! Form::open(['action' => ['StaffMemberController@batchUpdate'], 'class' => 'form', 'id' => 'update_form']) !!}
 				<table class="table table-hover">

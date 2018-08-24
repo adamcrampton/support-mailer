@@ -24,7 +24,7 @@ class ProviderController extends AdminSectionController
         $this->providerList = $provider->getProviderList()->sortBy('provider_name');
 
         // Get Deleted Providers.
-        $this->deletedProviderList = $provider->getDeletedProviders()->sortBy('provider_name');
+        $this->deletedProviderList = $provider->getDeletedProviderList()->sortBy('provider_name');
     }
 
     /**
@@ -157,7 +157,7 @@ class ProviderController extends AdminSectionController
         $updateArray = $this->buildUpdateArray($request, 'provider', ['provider_name', 'provider_email']);   
 
         // Just return with warning if no items were updated or deleted.
-        $this->checkForRecordChanges($deleteArray, $updateArray, $restoreArray 'providers.index');
+        $this->checkForRecordChanges($deleteArray, $updateArray, $restoreArray, 'providers.index');
 
         // Unset any items tagged for deletion so we don't try to update them.
         // This may occur in a scenario where the field is edited and 'Delete' is also ticked.
