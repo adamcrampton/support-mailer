@@ -43,7 +43,8 @@
 				      <label class="col-lg-3 col-form-label form-control-label">Show Multiple Providers</label>
 				      <div class="col-lg-9">
 						<select class="form-control" name="show_multiple_providers" id="show_multiple_providers" required>
-							<option value="{{ $config->show_multiple_providers }}">{{ $config->show_multiple_providers ? 'Yes' : 'No' }}</option>
+							<option value="1" {{ $config->show_multiple_providers ? 'selected' : '' }}>Yes</option>
+							<option value="0" {{ ! $config->show_multiple_providers ? 'selected' : '' }}>No</option>
 						</select>
 				      </div>	      
 				  </div>
@@ -51,7 +52,9 @@
 				      <label class="col-lg-3 col-form-label form-control-label">Use Staff List</label>
 				      <div class="col-lg-9">
 				      	<select class="form-control" name="use_staff_list" id="use_staff_list" required>
-							<option value="{{ $config->use_staff_list }}">{{ $config->use_staff_list ? 'Yes' : 'No' }}</option>
+							<option value="1" {{ $config->use_staff_list ? 'selected' : '' }}>Yes</option>
+							<option value="0" {{ ! $config->use_staff_list ? 'selected' : '' }}>No</option>
+
 						</select>
 				      </div>
 				      {{-- Select --}}
