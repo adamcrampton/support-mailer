@@ -50,7 +50,6 @@ As follows:
 1. Run npm run dev - this will copy Bootstrap 4 and jQuery into your public directory (via Webpack)
 
 ## TODO List
-* Update migrations to set default fields and constraints where appropriate
 * Optimise loops + database queries - there's some not-very-good stuff in there
 
 ## Future Features
