@@ -64,7 +64,8 @@ class UserController extends AdminSectionController
         return view('admin.user_restore', [
             'config' => $this->configData,
             'adminSections' => $this->adminSections,
-            'userList' => $this->deletedUserList
+            'userList' => $this->deletedUserList,
+            'permissionList' => $this->permissionList
         ]);
     }
 

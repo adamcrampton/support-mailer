@@ -151,7 +151,7 @@ class ProviderController extends AdminSectionController
         $deleteArray = $this->buildDeleteArray($request, 'provider');
 
         // Check for any items tagged for restoration. If found, add to array for batch restore.
-        $deleteArray = $this->buildRestoreArray($request, 'provider');
+        $restoreArray = $this->buildRestoreArray($request, 'provider');
 
         // Determine which fields have changed, and prepare array for batch update.
         $updateArray = $this->buildUpdateArray($request, 'provider', ['provider_name', 'provider_email']);   

@@ -72,7 +72,7 @@
 							<th scope="col">Last Name</th>
 							<th scope="col">Email</th>
 							<th scope="col">Permission Level</th>
-							<th scope="col" class="text-center">Delete</th>
+							<th scope="col" class="text-center">Restore</th>
 						</tr>
 					</thead>
 					@foreach($userList as $index => $user)

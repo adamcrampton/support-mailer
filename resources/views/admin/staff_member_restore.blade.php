@@ -17,7 +17,7 @@
 							<th scope="col">First Name</th>
 							<th scope="col">Last Name</th>
 							<th scope="col">Email</th>
-							<th scope="col" class="text-center">Delete</th>
+							<th scope="col" class="text-center">Restore</th>
 						</tr>
 					</thead>
 					@foreach($staffList as $index => $staff)
