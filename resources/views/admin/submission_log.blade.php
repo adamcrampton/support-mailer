@@ -25,7 +25,7 @@
 					</thead>
 					@foreach($logData as $data)
 						<tr>
-							<td>{{ $data->created_at }}</td>
+							<td>{{ $data->created_at->format('d-m-Y H:i:s') }}</td>
 							<td>{{ $data->email_sent }}</td>
 							<td>{{ $data->staff_name }}</td>
 							<td>{{ $data->staff_email }}</td>

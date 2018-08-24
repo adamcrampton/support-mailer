@@ -22,8 +22,8 @@ class CreateSubmissionLogsTable extends Migration
             $table->smallInteger('provider_name_fk');
             $table->string('contact_method');
             $table->smallInteger('issue_type_fk');       
-            $table->string('details_field');
-            $table->text('errors');
+            $table->string('details_field')->nullable();
+            $table->text('errors')->nullable();
             $table->timestamps();
         });
     }
