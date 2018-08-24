@@ -11,12 +11,16 @@ Configurable items include:
 * Form heading
 * Form title
 * Intro text on form page
-* Storing support provider name and email addresses (with a default setting)
+* Support provider list (name and email) with default setting
 * Option to show one or multiple providers
 * Staff list
 * Option to display staff list dropdown or regular input fields (in case you don't want to maintain a staff list)
 * Issue type list
-* User management with access control
+* User management
+
+Other features:
+* Access control - Admin/Editor/Viewer
+* Log viewer (all tickets are written to the log)
 
 On submitting, an email will be sent to the support provider with:
 * Intro text
@@ -46,8 +50,6 @@ As follows:
 1. Run npm run dev - this will copy Bootstrap 4 and jQuery into your public directory (via Webpack)
 
 ## TODO List
-* Build log viewer
-* Check for existing relationships when processing deletions - probably better to tag them as deleted than actually delete (because of the log table)
 * Update migrations to set default fields and constraints where appropriate
 * Optimise loops + database queries - there's some not-very-good stuff in there
 

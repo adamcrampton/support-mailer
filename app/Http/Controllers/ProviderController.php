@@ -135,7 +135,7 @@ class ProviderController extends AdminSectionController
         $updateArray = $this->buildUpdateArray($request, 'provider', ['provider_name', 'provider_email']);   
 
         // Just return with warning if no items were updated or deleted.
-        $this->checkForRecordChanges($deleteArray, $updateArray, 'provider.index');
+        $this->checkForRecordChanges($deleteArray, $updateArray, 'providers.index');
 
         // Unset any items tagged for deletion so we don't try to update them.
         // This may occur in a scenario where the field is edited and 'Delete' is also ticked.
