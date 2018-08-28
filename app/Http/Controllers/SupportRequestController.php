@@ -14,7 +14,6 @@ use App\Mail\SupportMailer;
 class SupportRequestController extends Controller
 {
     private $configData;
-    private $fieldConfig;
     private $providerList;
     private $issueList;
     private $staffMembers;
@@ -52,9 +51,6 @@ class SupportRequestController extends Controller
             $this->validationOptions['last_name'] = 'required|max:255';
             $this->validationOptions['email'] = 'required|email';
         }
-
-        // Set the actual fields we are going to eventually pass to the mailer.
-        $this->fieldConfig = $config->getFieldConfig();
     }  
 
     /**
