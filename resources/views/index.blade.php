@@ -129,9 +129,15 @@
                         </div>
                       </div>
                       <div class="form-group row required">
-                       <label class="col-lg-3 col-form-label form-control-label">Issue Details</label>
+                       <label class="col-lg-3 col-form-label form-control-label">Issue details</label>
                           <div class="col-lg-9">
                               {{ Form::textarea('issue_details', old('issue_details'), ['class' => 'form-control', 'id' => 'issue_details', 'rows' => '6', 'required']) }}
+                          </div>
+                      </div>
+                      <div class="form-group row required">
+                       <label class="col-lg-3 col-form-label form-control-label">Upload files (optional)</label>
+                          <div class="col-lg-9">
+                              {{ Form::file('attachments', ['class' => 'form-control-file']) }}
                           </div>
                       </div>
                       <div class="form-group row">
