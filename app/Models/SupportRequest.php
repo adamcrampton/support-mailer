@@ -58,6 +58,10 @@ class SupportRequest extends Model
         $fieldArray['preferred_contact'] = $request->preferred_contact;
         $fieldArray['details'] = $request->issue_details;
 
+
+
+        $fieldArray['attachments'] = $request->attachments;
+
         return $fieldArray;
     }
 

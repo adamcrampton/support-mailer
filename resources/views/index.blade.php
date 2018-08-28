@@ -56,7 +56,7 @@
                   <h3 class="mb-0">Your Information</h3>
               </div>
               <div class="card-body">
-                  {!! Form::open(['action' => 'SupportRequestController@store', 'class' => 'form']) !!}
+                  {!! Form::open(['action' => 'SupportRequestController@store', 'files' => 'true', 'class' => 'form']) !!}
                       {{-- Display select for providers if configured to do so. --}}
                       @if ($config->show_multiple_providers)
                        <div class="form-group row required">
@@ -137,7 +137,7 @@
                       <div class="form-group row required">
                        <label class="col-lg-3 col-form-label form-control-label">Upload files (optional)</label>
                           <div class="col-lg-9">
-                              {{ Form::file('attachments', ['class' => 'form-control-file']) }}
+                              {{ Form::file('attachments[]', ['multiple' => true, 'class' => 'form-control-file']) }}
                           </div>
                       </div>
                       <div class="form-group row">
