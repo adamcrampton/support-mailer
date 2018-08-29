@@ -16,7 +16,6 @@ class SupportMailer extends Mailable
     private $emailSubject;
     private $emailFrom;
     private $emailReplyTo;
-    private $emailAttachments;
 
     /**
      * Build the message.
@@ -27,18 +26,21 @@ class SupportMailer extends Mailable
     {     
         $message = $this->view('mail.support_request')
                 ->from($this->emailFrom[0], $this->emailFrom[1])
-                ->subject($this->emailSubject)
-                ->with($this->fieldArray);
+                ->subject($this->emailSubject);
 
         // Process and attach files if they exist in the request.
-        if (! empty($this->emailAttachments)) {
+        if (! empty($this->fieldArray['uploaded_files'])) {
             // Loop through and set the filename for each.
-            foreach ($this->emailAttachments as $attachments => $attachment) {
-                $message->attach($attachment, [
-                    'as' => $attachment->getClientOriginalName()
+            foreach ($this->fieldArray['uploaded_files'] as $file_uploads => $file) {
+                $message->attach($file, [
+                    'as' => $file->getClientOriginalName()
                 ]);
             }
+
+            unset($this->fieldArray['uploaded_files']);
         }
+
+        $message->with($this->fieldArray);
 
         return $message;
     }
@@ -50,8 +52,5 @@ class SupportMailer extends Mailable
         $this->emailFullName = $fieldArray['first_name'] . ' ' . $fieldArray['last_name'];
         $this->emailSubject = "Support Request from $this->emailFullName";
         $this->emailFrom = [$fieldArray['email'], $this->emailFullName];
-        
-        // Only set file attachments if submitted.
-        $this->emailAttachments = (! empty($fieldArray['attachments'])) ? $fieldArray['attachments'] : []; 
     }
 }

@@ -57,10 +57,7 @@ class SupportRequest extends Model
         // These fields are just pulled from the request.
         $fieldArray['preferred_contact'] = $request->preferred_contact;
         $fieldArray['details'] = $request->issue_details;
-
-
-
-        $fieldArray['attachments'] = $request->attachments;
+        $fieldArray['uploaded_files'] = $request->uploaded_files;
 
         return $fieldArray;
     }

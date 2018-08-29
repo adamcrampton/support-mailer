@@ -106,8 +106,6 @@ class SupportRequestController extends Controller
         // Now send the completed email to the specified provider.
         Mail::to($fieldArray['provider_details']->provider_email)->send($supportMailer);
 
-        dd('stop');
-
         // Log result to front end and return feedback (Mail::failures() will return an empty array if successful).
         $supportRequest->logResults(Mail::failures(), $fieldArray);
 
