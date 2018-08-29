@@ -50,7 +50,6 @@ As follows:
 1. Run npm run dev - this will copy Bootstrap 4 and jQuery into your public directory (via Webpack)
 
 ## Future Features
-* File uploading functionality
 * Pagination
 * Log exporting
 * LDAP to pull AD users in via cron job
