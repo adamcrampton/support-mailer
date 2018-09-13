@@ -18,7 +18,7 @@ class CreateConfigsTable extends Migration
             $table->string('config_name');
             $table->string('form_heading');
             $table->string('form_title');
-            $table->string('intro_html');
+            $table->text('intro_html');
             $table->smallInteger('default_provider_fk')->default(0);
             $table->boolean('show_multiple_providers')->default(0);
             $table->boolean('use_staff_list')->default(0);
