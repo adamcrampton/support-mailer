@@ -29,10 +29,10 @@ class SupportRequestController extends Controller
         $this->providerList = $this->configData->show_multiple_providers ? $provider->getProviderList() : $this->configData->default_provider_fk;
 
         // Get a list of issue types.
-        $this->issueList = $issueType->getIssueTypes();
+        $this->issueList = $issueType->getIssueTypes()->sortBy('issue_name');
 
         // Get a list of staff members if the option is set.
-        $this->staffMembers = $this->configData->use_staff_list ? $staffMember->getStaffMembers() : [];
+        $this->staffMembers = $this->configData->use_staff_list ? $staffMember->getStaffMembers()->sortBy('staff_name') : [];
 
         // Set default validation options.
         $this->validationOptions['preferred_contact'] = 'required';
