@@ -7,7 +7,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use App\Policies\ConfigPolicy;
 use App\Policies\IssueTypePolicy;
 use App\Policies\ProviderPolicy;
-use App\Policies\StaffmemberPolicy;
+use App\Policies\StaffMemberPolicy;
 use App\Policies\SubmissionLogPolicy;
 use App\Policies\UserPolicy;
 use App\Models\IssueType;
